@@ -11,6 +11,13 @@
       "titre": "1984",
       "annee": 1949,
       "genre": "Science-fiction"
+    },
+    {
+      "id": 3,
+      "titre": "1984",
+      "auteur": "George Orwell",
+      "annee": 1949,
+      "genre": "Science-fiction"
     }
   ],
   "avis": [
