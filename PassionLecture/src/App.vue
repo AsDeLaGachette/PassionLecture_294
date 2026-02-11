@@ -9,7 +9,7 @@ import Footer from './components/Footer.vue'
         <section class="hero-section">
             <h2 class="page-title">Les meilleurs ouvrages pour les<br>fans de l'ETML</h2>
             
-            <a href="bibliotheque.html" class="btn-view-library">Voir bibliothèque</a>
+            <a href="#" class="btn-view-library">Voir bibliothèque</a>
             
             <div class="books-grid">
                 <a href="detail.html" class="book-card">
