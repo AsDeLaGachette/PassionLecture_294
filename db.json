@@ -1,0 +1,36 @@
+{
+  "livres": [
+    {
+      "id": 1,
+      "titre": "Le Petit Prince",
+      "auteur": "Antoine de Saint-Exupéry",
+      "annee": 1943,
+      "genre": "Conte philosophique"
+    },
+    {
+      "id": 2,
+      "titre": "1984",
+      "auteur": "George Orwell",
+      "annee": 1949,
+      "genre": "Science-fiction"
+    }
+  ],
+  "avis": [
+    {
+      "id": 1,
+      "livre_id": 1,
+      "utilisateur": "Alice",
+      "note": 5,
+      "commentaire": "Un classique magnifique et intemporel.",
+      "date": "2026-02-11"
+    },
+    {
+      "id": 2,
+      "livre_id": 2,
+      "utilisateur": "Bob",
+      "note": 4,
+      "commentaire": "Très prenant et toujours d'actualité.",
+      "date": "2026-02-10"
+    }
+  ]
+}
