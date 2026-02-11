@@ -1,22 +1,10 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <nav class="navbar">
-        <div class="nav-left">
-            <a href="index.html" class="home-icon">🏠</a>
-        </div>
-        <div class="nav-center">
-            <h1 class="logo">LectureTif</h1>
-        </div>
-        <div class="nav-right">
-            <a href="mes-ouvrages.html" class="nav-icon">📚</a>
-            <a href="signup.html" class="nav-icon account-icon">👤</a>
-        </div>
-    </nav>
-
+  <Header></Header>
     <main class="container">
         <section class="hero-section">
             <h2 class="page-title">Les meilleurs ouvrages pour les<br>fans de l'ETML</h2>
@@ -106,37 +94,6 @@ import TheWelcome from './components/TheWelcome.vue'
             </div>
         </section>
     </main>
+    <Footer></Footer>
 
-    <footer class="footer">
-        <!-- Footer content to be added -->
-    </footer>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
