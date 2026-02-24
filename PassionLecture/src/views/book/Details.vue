@@ -1,10 +1,9 @@
 <script setup>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-    <Header></Header>
     <main class="container detail-container">
         <div class="detail-layout">
             <div class="detail-left">
@@ -51,11 +50,9 @@ import Footer from './components/Footer.vue'
                             <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua quis</p>
                         </div>
                     </div>
-
-                    <a href="avis.html" class="btn-add-review">Ajouter un avis</a>
+                <RouterLink :to="{ name: 'ReviewAdd' } " class="btn-add-review">Ajouter un avis</RouterLink>
                 </div>
             </div>
         </div>
     </main>
-    <Footer></Footer>
 </template>

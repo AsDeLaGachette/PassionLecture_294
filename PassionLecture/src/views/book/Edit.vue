@@ -1,10 +1,9 @@
 <script setup>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-    <Header></Header>
      <main class="container">
         <h2 class="page-title-small">Modifier un ouvrage</h2>
         
@@ -72,5 +71,4 @@ import Footer from './components/Footer.vue'
             </div>
         </div>
     </main>
-    <Footer></Footer>
 </template>

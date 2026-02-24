@@ -1,10 +1,9 @@
 <script setup>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-    <Header></Header>
      <main class="container auth-container">
         <div class="auth-card">
             <h2 class="auth-title">S'inscrire</h2>
@@ -33,15 +32,14 @@ import Footer from './components/Footer.vue'
                 </div>
 
                 <div class="auth-links">
-                    <a href="login.html" class="link-secondary">Déjà un compte ?</a>
+                    <router-link class="link-secondary" :to="{ name: 'Login' }">Déjà un compte ?</router-link>
                 </div>
 
                 <div class="auth-buttons">
-                    <button type="button" class="btn-secondary" onclick="window.location.href='login.html'">Connexion</button>
+                    <router-link class="btn-secondary" :to="{ name: 'Login' }">Connexion</router-link>
                     <button type="submit" class="btn-primary">S'inscrire</button>
                 </div>
             </form>
         </div>
     </main>
-    <Footer></Footer>
 </template>

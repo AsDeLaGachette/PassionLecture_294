@@ -1,17 +1,18 @@
 <script setup>
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
     <nav class="navbar">
         <div class="nav-left">
-            <a href="index.html" class="home-icon">🏠</a>
+            <router-link class="home-icon" :to="{ name: 'Home' }">🏠</router-link>
         </div>
         <div class="nav-center">
             <h1 class="logo">LectureTif</h1>
         </div>
         <div class="nav-right">
-            <a href="mes-ouvrages.html" class="nav-icon">📚</a>
-            <a href="signup.html" class="nav-icon account-icon">👤</a>
+            <router-link class="nav-icon" :to="{ name: 'MyBooks' }">📚</router-link>
+            <router-link class="nav-icon" :to="{ name: 'Signup' }">👤</router-link>
         </div>
     </nav>
 </template>

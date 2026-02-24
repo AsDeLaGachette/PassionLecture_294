@@ -535,6 +535,7 @@ body {
     filter: brightness(0.7);
 }
 
+.btn-details,
 .btn-delete,
 .btn-edit {
     padding: 0.75rem 1.5rem;
@@ -548,6 +549,16 @@ body {
     text-decoration: none;
     text-align: center;
     white-space: nowrap;
+}
+
+.btn-details {
+    background: #1f21ac;
+    color: var(--white);
+}
+
+.btn-details:hover {
+    background: #1b1d99; 
+    transform: translateY(-2px);
 }
 
 .btn-delete {
@@ -634,17 +645,14 @@ body {
 .form-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.nameForm {
-	max-width: 15vw;
+    margin-bottom: 1rem;
 }
 
 .form-group.full-width {
@@ -712,13 +720,33 @@ body {
 
 .star {
     cursor: pointer;
-    color: var(--border-color);
+    color: #ddd;
     transition: all 0.2s ease;
 }
 
 .star:hover {
     transform: scale(1.2);
     color: #ffd700;
+}
+
+.star.star-selected {
+    color: #ffd700;
+}
+
+/* Review Pages */
+.review-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.review-form {
+    background: var(--white);
+    border: 3px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 /* Auth Pages (Login & Signup) */
@@ -749,9 +777,8 @@ body {
 }
 
 .auth-form {
-    display: flex;
+    display: flex;  
     flex-direction: column;
-    gap: 1.5rem;
 }
 
 .form-row-auth {
@@ -761,8 +788,8 @@ body {
 }
 
 .auth-links {
-    text-align: center;
-    margin: 0.5rem 0;
+    text-align: left;
+    margin-top: 0.5rem;
 }
 
 .link-secondary {
@@ -780,7 +807,6 @@ body {
 .auth-buttons {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
 }
 
 .btn-primary,
@@ -794,6 +820,8 @@ body {
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -899,6 +927,14 @@ body {
     
     .auth-title {
         font-size: 1.5rem;
+    }
+    
+    .review-container {
+        padding: 0;
+    }
+    
+    .review-form {
+        padding: 1.5rem;
     }
 }
 
