@@ -133,6 +133,7 @@ body {
 
 /* Books Grid - Home Page */
 .books-grid {
+    list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.5rem;
@@ -140,6 +141,7 @@ body {
 }
 
 .book-card {
+    display: block;
     background: var(--white);
     border: 3px solid var(--border-color);
     border-radius: 20px;

@@ -1,0 +1,48 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "Le Petit Prince",
+      "year": 1943,
+      "author_id": 1,
+      "genre": "Conte philosophique"
+    },
+    {
+      "id": 2,
+      "title": "1984",
+      "year": 1949,
+      "author_id": 2,
+      "genre": "Science-fiction"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "book_id": 1,
+      "user": "Alice",
+      "note": 5,
+      "comment": "Un classique magnifique et intemporel.",
+      "date": "2026-02-11"
+    },
+    {
+      "id": 2,
+      "book_id": 2,
+      "user": "Bob",
+      "note": 4,
+      "comment": "Très prenant et toujours d'actualité.",
+      "date": "2026-02-10"
+    }
+  ],
+  "authors": [
+    {
+        "id": 1,
+        "firstname" : "Antoine",
+        "lastname": "de Saint-Exupéry"
+    },
+    {
+        "id": 2,
+        "firstname" : "Orwell",
+        "lastname": "George"
+    }
+  ]
+}
