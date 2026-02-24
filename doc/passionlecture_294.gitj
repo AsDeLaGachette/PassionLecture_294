@@ -4,5 +4,36 @@
   "branch": "latif",
   "me": "latifcodess",
   "journalStartDate": null,
-  "exceptions": []
+  "exceptions": [
+    {
+      "id": "dbdb2660-2aa3-4302-a327-a2895d563037",
+      "type": "commitless",
+      "name": "feat(json-server): ajout json-server",
+      "description": "je me suis aidé de l'ia pour cherché les données depuis le serveur json et j'ai galeré à chercher les données des auteurs car dans les données des livres j'ai mis l'id de l'auteur donc à partir de l'id de l'auteur je devais trouver son nom et son prenom",
+      "date": "2026-02-24T14:13:00.000Z",
+      "duration": 120,
+      "status": "Done",
+      "author": "latifcodess"
+    },
+    {
+      "id": "d50182a4-afcc-4956-8bec-08e18627e71a",
+      "type": "commitless",
+      "name": "Explication routes",
+      "description": "David m'a expliqué les routes en vuejs car je n'ai pas eu l'occasion de les voir",
+      "date": "2026-02-24T14:14:00.000Z",
+      "duration": 20,
+      "status": "Done",
+      "author": "latifcodess"
+    },
+    {
+      "id": "c80c1ad7-d47c-457b-8b63-c55943eb7429",
+      "type": "commitless",
+      "name": "feat(json-server): reglage de service et de json-server",
+      "description": "le prof est venu voir notre code et nous a suggeré de modifier notre service en prenant pour exemple celui qu'il nous a donné ensuite on a modifié db.json pour afficher les auteurs plus simplement",
+      "date": "2026-02-24T15:43:00.000Z",
+      "duration": 75,
+      "status": "Done",
+      "author": "latifcodess"
+    }
+  ]
 }
