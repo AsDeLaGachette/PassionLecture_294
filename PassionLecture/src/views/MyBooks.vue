@@ -27,8 +27,8 @@ onMounted(() => {
                     <div class="my-work-thumbnail"></div>
                 </a>
                 <div class="hover-buttons">
-                    <RouterLink :to="{ name: 'BookDetails', params: { id: 1 } }" class="btn-details">Détails</RouterLink>
-                    <RouterLink :to="{ name: 'BookEdit', params: { id: 1 } }" class="btn-edit">Modifier</RouterLink>
+                    <router-link :to="{ name: 'BookDetails', params: { id: book.id } }" class="btn-details">Détails</router-link>
+                    <router-link :to="{ name: 'BookEdit', params: { id: book.id } }" class="btn-edit">Modifier</router-link>
                     <button class="btn-delete">Supprimer</button>
                 </div>
             </li>

@@ -1,27 +1,33 @@
 <script setup>
 import { ref } from 'vue'
 import BookService from '@/services/BookService'
+import { useRouter } from 'vue-router'
+
 const title = ref('')
 const nbrPage = ref('')
 const author = ref('')
-const resume = ref('')
-const category = ref('') 
+const description = ref('')
+const genre = ref('')
 const year = ref('')
-const publisher = ref('') 
-const excerpt = ref('') 
+const publisher = ref('')
+const excerpt = ref('')
+const user_id = 1
 const author_id = ref(null)
+const router = useRouter()
+
 const submitBook = async () => {
   try {
     const newBook = {
       title: title.value,
-      nbrPage: nbrPage.value,
+      nbrPage: parseInt(nbrPage.value),
       author: author.value,
-      resume: resume.value,
-      category: category.value,
-      year: year.value,
+      description: description.value,
+      genre: genre.value,
+      year: parseInt(year.value),
       publisher: publisher.value,
       excerpt: excerpt.value,
       author_id: author_id.value,
+      user_id: user_id
     }
 
     await BookService.addBook(newBook)
@@ -29,12 +35,13 @@ const submitBook = async () => {
     title.value = ''
     nbrPage.value = ''
     author.value = ''
-    resume.value = ''
-    category.value = ''
+    description.value = ''
+    genre.value = ''
     year.value = ''
     publisher.value = ''
     excerpt.value = ''
-    author_id.value = null
+
+    router.push({ name: 'MyBooks' })
   } catch (error) {
     console.error('Error creating book:', error)
   }
@@ -79,18 +86,26 @@ const submitBook = async () => {
               class="form-textarea"
               rows="3"
               placeholder="Résumé du livre..."
-              v-model="resume"
+              v-model="description"
             ></textarea>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>Catégorie</label>
-              <select class="form-select" v-model="category">
+              <select class="form-select" v-model="genre">
                 <option disabled value="">Sélectionner</option>
-                <option>Fiction</option>
-                <option>Non-fiction</option>
-                <option>Technique</option>
+                <option>Roman</option>
+                <option>Science-fiction</option>
+                <option>Fantastique</option>
+                <option>Policier</option>
+                <option>Histoire</option>
+                <option>Développement personnel</option>
+                <option>Poésie</option>
+                <option>Essai</option>
+                <option>Enfant</option>
+                <option>Bandes dessinées</option>
+                <option>Manga</option>
               </select>
             </div>
 
@@ -119,8 +134,7 @@ const submitBook = async () => {
               v-model="excerpt"
             ></textarea>
           </div>
-
-          <button type="submit" class="btn-submit">Ajouter</button>
+            <button type="submit" class="btn-submit">Ajouter</button>
         </form>
       </div>
     </div>

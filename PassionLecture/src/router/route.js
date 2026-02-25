@@ -52,9 +52,10 @@ const router = createRouter({
       component: BookLayout,
       children: [
         {
-          path: 'edit',
+          path: '',
           name: 'BookEdit',
           component: BookEdit,
+          props: true,
         },
         {
           path: 'details',
@@ -68,12 +69,12 @@ const router = createRouter({
           component: ReviewLayout,
           children: [
             {
-              path: '/edit',
+              path: '/edit/:id',
               name: 'ReviewEdit',
               component: ReviewEdit,
             },
             {
-              path: '/add',
+              path: '/add/:id',
               name: 'ReviewAdd',
               component: ReviewAdd,
             },

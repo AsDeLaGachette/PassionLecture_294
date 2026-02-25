@@ -5,14 +5,17 @@
       "title": "Capitaine Préverenges",
       "year": 2026,
       "author_id": 4,
-      "genre": "Comics",
+      "genre": "Roman",
       "user_id": 1,
       "author": {
         "id": 4,
         "firstname": "Oleksandr",
         "lastname": "Borodkin"
       },
-      "description": "",
+      "publisher": "Skibidi Tif",
+      "excerpt": "Capitain dave tu est trop fort oh mon dieu. S'exclama Tif",
+      "nbrPage": 67,
+      "description": "Suivez les aventures de Capitaine Préverenges",
       "img": "https://i.postimg.cc/4yDR6y7P/capprev.png"
 
     },
@@ -21,7 +24,7 @@
       "title": "Wolvermine #1",
       "year": 2026,
       "author_id": 2,
-      "genre": "Comics",
+      "genre": "Roman",
       "user_id": 2,
       "author": {
         "id": 2,
@@ -29,20 +32,27 @@
         "lastname": "Krasniqi"
       },
       "description": "",
+      "publisher": "Skibidi Tif",
+      "excerpt": "Tif lives matter",
+      "nbrPage": 67,
       "img": "https://i.postimg.cc/wTMpSKcb/wolvermine.jpg"
     },
     {
       "id": 3,
-      "title": "montagnes des langues",
+      "title": "Montagnes des langues",
       "year": 2025,
       "author_id": 3,
-      "genre": "Comte",
+      "genre": "Roman",
+      "user_id": 2,
       "author": {
         "id": 3,
         "firstname": "Kyell",
         "lastname": "Cornu"
       },
       "description": "",
+      "publisher": "Skibidi Tif",
+      "excerpt": "Tif lives matter",
+      "nbrPage": 67,
       "img": "https://i.postimg.cc/q7XSNQxD/montagnelangue.jpg"
     },
     {
@@ -50,13 +60,16 @@
       "title": "Supergoon #1",
       "year": 2026,
       "author_id": 4,
-      "genre": "Comics",
+      "genre": "Roman",
       "author": {
         "id": 4,
         "firstname": "Oleksandr",
         "lastname": "Borodkin"
       },
       "description": "",
+      "publisher": "Skibidi Tif",
+      "excerpt": "Tif lives matter",
+      "nbrPage": 67,
       "img": "https://i.postimg.cc/4NmDW6XX/supergoon.jpg"
     }
   ],
