@@ -25,10 +25,9 @@ onMounted(() => {
       <RouterLink :to="{ name: 'GetBooks' }" class="btn-view-library">
         Voir bibliothèque
       </RouterLink>
-
       <ul class="books-grid">
-        <li class="book-item" v-for="book in books" :key="book.id">
-          <RouterLink :to="{ name: 'BookDetails', params: { id: book.id } }" class="book-card">
+        <li class="book-item" v-for="(book,index) in books" :key="index">
+          <RouterLink v-if="index < 5" :to="{ name: 'BookDetails', params: { id: book.id } }" class="book-card">
             <div class="book-thumbnail"></div>
             <div class="book-info">
               <h3 class="book-title">{{ book.title }}</h3>

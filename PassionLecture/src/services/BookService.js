@@ -16,6 +16,9 @@ export default {
   getBook(id){
     return apiClient.get('/books/' + id)
   },
+  getBookFromUser(userId){
+    return apiClient.get(`/user/${userId}/books`)
+  },
   addBook(book){
     return apiClient.post('/books', book)
   }

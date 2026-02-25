@@ -6,6 +6,7 @@
       "year": 1943,
       "author_id": 1,
       "genre": "Conte philosophique",
+      "user_id": 1,
       "author": {
         "id": 1,
         "firstname": "Antoine",
@@ -18,6 +19,7 @@
       "year": 1949,
       "author_id": 2,
       "genre": "Science-fiction",
+      "user_id": 2,
       "author": {
         "id": 2,
         "firstname": "Orwell",

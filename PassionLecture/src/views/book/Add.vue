@@ -24,7 +24,7 @@ const submitBook = async () => {
       author_id: author_id.value,
     }
 
-    const response = await BookService.addBook(newBook)
+    await BookService.addBook(newBook)
 
     title.value = ''
     nbrPage.value = ''
