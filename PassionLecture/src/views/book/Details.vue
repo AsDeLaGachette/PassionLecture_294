@@ -1,6 +1,5 @@
 <script setup>
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+defineProps(["book"])
 </script>
 
 <template>
@@ -17,7 +16,7 @@ import Footer from '@/components/Footer.vue'
 
             <div class="detail-right">
                 <div class="info-card">
-                    <h2>BiblioLectif</h2>
+                    <h2>{{ book?.title }}</h2>
                     <div class="detail-rating">
                         <span class="star-filled">★</span>
                         <span class="star-filled">★</span>
@@ -27,9 +26,8 @@ import Footer from '@/components/Footer.vue'
                         <span class="rating-text">4.0/5</span>
                     </div>
                     <div class="info-text">
-                        <p><strong>Lorem ipsum dolor sit amet</strong></p>
-                        <p>Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-                        <p>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris</p>
+                        <p><strong>{{ book?.author.firstname }} {{ book?.author.lastname }}</strong></p>
+                        <p>{{ book?.description }}</p>
                     </div>
 
                     <div class="quality-section">

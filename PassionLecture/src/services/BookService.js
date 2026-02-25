@@ -5,15 +5,18 @@ const apiClient = axios.create({
   withCredentials: false,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 })
 
 export default {
   getBooks() {
     return apiClient.get('/books')
   },
-  getAuthor(id){
+  getBook(id) {
+    return apiClient.get('/books/' + id)
+  },
+  getAuthor(id) {
     return apiClient.get('/authors/' + id)
-  }
+  },
 }

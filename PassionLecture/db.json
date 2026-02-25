@@ -10,7 +10,8 @@
         "id": 1,
         "firstname": "Antoine",
         "lastname": "de Saint-Exupéry"
-      }
+      },
+      "description": "Un aviateur perdu dans le désert rencontre un petit prince venu d'un autre monde. Ce conte poétique nous enseigne que l'essentiel est invisible pour les yeux."
     },
     {
       "id": 2,
@@ -22,7 +23,8 @@
         "id": 2,
         "firstname": "Orwell",
         "lastname": "George"
-      }
+      },
+      "description": "Winston Smith tente de résister à l'oppression de Big Brother dans une société où la pensée est surveillée. Ce roman dénonce la manipulation de la vérité et la perte absolue de liberté individuelle."
     }
   ],
   "reviews": [
