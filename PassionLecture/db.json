@@ -6,6 +6,7 @@
       "year": 1943,
       "author_id": 1,
       "genre": "Conte philosophique",
+      "user_id": 1,
       "author": {
         "id": 1,
         "firstname": "Antoine",
@@ -19,6 +20,7 @@
       "year": 1949,
       "author_id": 2,
       "genre": "Science-fiction",
+      "user_id": 2,
       "author": {
         "id": 2,
         "firstname": "Orwell",
@@ -43,18 +45,6 @@
       "note": 4,
       "comment": "Très prenant et toujours d'actualité.",
       "date": "2026-02-10"
-    }
-  ],
-  "authors": [
-    {
-      "id": 1,
-      "firstname": "Antoine",
-      "lastname": "de Saint-Exupéry"
-    },
-    {
-      "id": 2,
-      "firstname": "Orwell",
-      "lastname": "George"
     }
   ]
 }

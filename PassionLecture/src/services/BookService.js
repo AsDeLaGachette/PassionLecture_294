@@ -13,10 +13,13 @@ export default {
   getBooks() {
     return apiClient.get('/books')
   },
-  getBook(id) {
+  getBook(id){
     return apiClient.get('/books/' + id)
   },
-  getAuthor(id) {
-    return apiClient.get('/authors/' + id)
+  getBookFromUser(userId){
+    return apiClient.get(`/user/${userId}/books`)
   },
+  addBook(book){
+    return apiClient.post('/books', book)
+  }
 }
