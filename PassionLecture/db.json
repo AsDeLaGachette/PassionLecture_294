@@ -2,31 +2,62 @@
   "books": [
     {
       "id": 1,
-      "title": "Le Petit Prince",
-      "year": 1943,
-      "author_id": 1,
-      "genre": "Conte philosophique",
+      "title": "Capitaine Préverenges",
+      "year": 2026,
+      "author_id": 4,
+      "genre": "Comics",
       "user_id": 1,
       "author": {
-        "id": 1,
-        "firstname": "Antoine",
-        "lastname": "de Saint-Exupéry"
+        "id": 4,
+        "firstname": "Oleksandr",
+        "lastname": "Borodkin"
       },
-      "description": "Un aviateur perdu dans le désert rencontre un petit prince venu d'un autre monde. Ce conte poétique nous enseigne que l'essentiel est invisible pour les yeux."
+      "description": "",
+      "img": "https://i.postimg.cc/4yDR6y7P/capprev.png"
+
     },
     {
       "id": 2,
-      "title": "1984",
-      "year": 1949,
+      "title": "Wolvermine #1",
+      "year": 2026,
       "author_id": 2,
-      "genre": "Science-fiction",
+      "genre": "Comics",
       "user_id": 2,
       "author": {
         "id": 2,
-        "firstname": "Orwell",
-        "lastname": "George"
+        "firstname": "Latif",
+        "lastname": "Krasniqi"
       },
-      "description": "Winston Smith tente de résister à l'oppression de Big Brother dans une société où la pensée est surveillée. Ce roman dénonce la manipulation de la vérité et la perte absolue de liberté individuelle."
+      "description": "",
+      "img": "https://i.postimg.cc/wTMpSKcb/wolvermine.jpg"
+    },
+    {
+      "id": 3,
+      "title": "montagnes des langues",
+      "year": 2025,
+      "author_id": 3,
+      "genre": "Comte",
+      "author": {
+        "id": 3,
+        "firstname": "Kyell",
+        "lastname": "Cornu"
+      },
+      "description": "",
+      "img": "https://i.postimg.cc/q7XSNQxD/montagnelangue.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Supergoon #1",
+      "year": 2026,
+      "author_id": 4,
+      "genre": "Comics",
+      "author": {
+        "id": 4,
+        "firstname": "Oleksandr",
+        "lastname": "Borodkin"
+      },
+      "description": "",
+      "img": "https://i.postimg.cc/4NmDW6XX/supergoon.jpg"
     }
   ],
   "reviews": [
