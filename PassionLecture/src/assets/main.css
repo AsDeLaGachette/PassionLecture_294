@@ -534,7 +534,7 @@ body {
   pointer-events: none;
 }
 
-.my-work-card-wrapper:hover .hover-buttons {
+.book-item:hover .hover-buttons {
   opacity: 1;
   pointer-events: auto;
 }

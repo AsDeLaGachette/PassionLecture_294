@@ -17,7 +17,6 @@
       "nbrPage": 67,
       "description": "Suivez les aventures de Capitaine Préverenges",
       "img": "https://i.postimg.cc/4yDR6y7P/capprev.png"
-
     },
     {
       "id": 2,
@@ -61,6 +60,7 @@
       "year": 2026,
       "author_id": 4,
       "genre": "Roman",
+      "user_id": 3,
       "author": {
         "id": 4,
         "firstname": "Oleksandr",
@@ -71,6 +71,23 @@
       "excerpt": "Tif lives matter",
       "nbrPage": 67,
       "img": "https://i.postimg.cc/4NmDW6XX/supergoon.jpg"
+    },
+    {
+      "title": "Latif",
+      "nbrPage": 67,
+      "author_id": 5,
+      "author": {
+        "id": 5,
+        "firstname": "Oleksandr",
+        "lastname": "Borodkin"
+      },
+      "description": "Latif Latif Latif Latif Latif",
+      "genre": "Science-fiction",
+      "year": 1999,
+      "publisher": "Latif Latif",
+      "excerpt": "Latif Latif Latif Latif Latif Latif Latif Latif Latif Latif Latif Latif",
+      "user_id": 1,
+      "id": 5
     }
   ],
   "reviews": [
