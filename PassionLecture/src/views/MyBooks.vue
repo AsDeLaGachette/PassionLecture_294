@@ -5,6 +5,7 @@ import BookService from '@/services/BookService'
 
 const userBooks = ref(null)
 const userId = 1
+const bookIdToDelete = ref(null)
 
 onMounted(() => {
   userBooks.value = null
@@ -17,12 +18,25 @@ onMounted(() => {
     })
 })
 
-const openModal = () => {
+const openModal = (id) => {
+    bookIdToDelete.value = id
   document.getElementById('deleteModal').classList.add('active')
 }
 
 const closeModal = () => {
   document.getElementById('deleteModal').classList.remove('active')
+}
+
+const confirmDelete = async () => {
+  try {
+    await BookService.deleteBook(bookIdToDelete.value)
+    
+    userBooks.value = userBooks.value.filter(b => b.id !== bookIdToDelete.value)
+    
+    closeModal()
+  } catch (error) {
+    console.error("Erreur suppression:", error)
+  }
 }
 </script>
 
@@ -41,7 +55,7 @@ const closeModal = () => {
           <router-link :to="{ name: 'BookEdit', params: { id: book.id } }" class="btn-edit"
             >Modifier</router-link
           >
-          <button class="btn-delete" @click="openModal()">Supprimer</button>
+          <button class="btn-delete" @click="openModal(book.id)">Supprimer</button>
         </div>
       </li>
       <li class="library-item">
@@ -62,7 +76,7 @@ const closeModal = () => {
         </p>
         <div class="modal-actions">
           <button class="btn-cancel" @click="closeModal()">Annuler</button>
-          <button class="btn-confirm-delete">Supprimer définitivement</button>
+          <button class="btn-confirm-delete" @click="confirmDelete()">Supprimer définitivement</button>
         </div>
       </div>
     </div>
