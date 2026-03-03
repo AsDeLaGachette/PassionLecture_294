@@ -88,6 +88,38 @@
       "excerpt": "Latif Latif Latif Latif Latif Latif Latif Latif Latif Latif Latif Latif",
       "user_id": 1,
       "id": 5
+    },
+    {
+      "title": "Arrivée de sehnan",
+      "nbrPage": 165,
+      "author": {
+        "firstname": "Dave",
+        "lastname": "Sottas"
+      },
+      "description": "L'arrivée de Sehnan au pouvoir décris par nos meilleurs historiens.",
+      "genre": "Histoire",
+      "year": 465,
+      "publisher": "Latif Krasniqi",
+      "excerpt": "I'am SEHNAN !!! s'éxprima le grand Sehnan.",
+      "author_id": null,
+      "user_id": 1,
+      "id": 6
+    },
+    {
+      "title": "SpiderPhile",
+      "nbrPage": 67,
+      "author": {
+        "firstname": "Billy",
+        "lastname": "Dave"
+      },
+      "description": "Découvrez les aventures de SpiderPhile dans la ville de Lausanne city !",
+      "genre": "Bandes dessinées",
+      "year": 2006,
+      "publisher": "Latif Krasniqi",
+      "excerpt": "J'arrive ! Patientez quelque seconde... Je code un programme C# afin de mettre fin à ce monstre ! ",
+      "author_id": null,
+      "user_id": 1,
+      "id": 7
     }
   ],
   "reviews": [
