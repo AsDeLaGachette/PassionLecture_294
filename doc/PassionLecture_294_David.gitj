@@ -1,0 +1,59 @@
+{
+  "repoUrl": "https://github.com/AsDeLaGachette/PassionLecture_294",
+  "projectName": "PassionLecture_294_David",
+  "branch": "main",
+  "me": "DavidSottasLeBarbare1",
+  "journalStartDate": null,
+  "exceptions": [
+    {
+      "id": "1a2ed195-76e1-4d0c-be27-954ad0d84ac3",
+      "type": "commitless",
+      "name": "Maquettes",
+      "description": "J'ai commencé les maquettes",
+      "date": "2026-02-10T17:24",
+      "duration": 61,
+      "status": "WIP",
+      "author": "DavidSottasLeBarbare1"
+    },
+    {
+      "id": "da00da75-5abf-4317-9f55-936323a21ab7",
+      "type": "commitless",
+      "name": "Maquettes",
+      "description": "J'ai fini les maquettes (pour l'instant)",
+      "date": "2026-02-11T08:24",
+      "duration": 23,
+      "status": "Done",
+      "author": "DavidSottasLeBarbare1"
+    },
+    {
+      "id": "1790a743-eb60-46ac-9267-3fcc5e70e5f5",
+      "type": "commitless",
+      "name": "Revue prof",
+      "description": "Le prof est venu voir notre projet pour parler des changements par rapport au service",
+      "date": "2026-02-24T16:40",
+      "duration": 73,
+      "status": "Done",
+      "author": "DavidSottasLeBarbare1"
+    },
+    {
+      "id": "b0dc6e0e-4bd9-4b1e-a005-98b0add3eecb",
+      "type": "commitless",
+      "name": "Revue prof",
+      "description": "Le prof est venu nous voir pour vérifier nos maquettes",
+      "date": "2026-02-11T08:21:00.000Z",
+      "duration": 56,
+      "status": "Done",
+      "author": "DavidSottasLeBarbare1"
+    },
+    {
+      "id": "2aa4c360-6fda-4aa2-9864-abe91f636aac",
+      "type": "commitless",
+      "name": "Revue prof",
+      "description": "Le prof nous a fait la revue des 80%",
+      "date": "2026-03-03T14:11",
+      "duration": 27,
+      "status": "Done",
+      "author": "DavidSottasLeBarbare1"
+    }
+  ]
+}

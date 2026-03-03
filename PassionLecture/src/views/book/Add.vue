@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 
 const title = ref('')
 const nbrPage = ref('')
-const author = ref('')
+const authorName = ref('')
 const description = ref('')
 const genre = ref('')
 const year = ref('')
@@ -17,10 +17,17 @@ const router = useRouter()
 
 const submitBook = async () => {
   try {
+    const nameParts = authorName.value.trim().split(' ')
+    const firstname = nameParts[0]
+    const lastname = nameParts.slice(1).join(' ')
+
     const newBook = {
       title: title.value,
       nbrPage: parseInt(nbrPage.value),
-      author: author.value,
+      author: {
+        firstname: firstname,
+        lastname: lastname
+      },
       description: description.value,
       genre: genre.value,
       year: parseInt(year.value),
@@ -34,7 +41,7 @@ const submitBook = async () => {
 
     title.value = ''
     nbrPage.value = ''
-    author.value = ''
+    authorName.value = ''
     description.value = ''
     genre.value = ''
     year.value = ''
@@ -76,7 +83,7 @@ const submitBook = async () => {
 
             <div class="form-group">
               <label>Auteur</label>
-              <input type="text" class="form-input" placeholder="Prénom et Nom" v-model="author" />
+              <input type="text" class="form-input" placeholder="Prénom et Nom" v-model="authorName" />
             </div>
           </div>
 
