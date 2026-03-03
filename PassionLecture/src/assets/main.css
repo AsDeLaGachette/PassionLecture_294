@@ -979,3 +979,118 @@ body {
 .book-card:nth-child(5) {
   animation-delay: 0.25s;
 }
+
+/* --- Modal Adaptée au Design Global --- */
+
+.modal-overlay {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(45, 27, 105, 0.8); /* Utilisation du violet primaire avec transparence */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px); /* Effet de flou moderne sur l'arrière-plan */
+}
+
+.modal-overlay.active {
+  display: flex;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background-color: var(--white);
+  padding: 2.5rem;
+  border-radius: 25px; /* Arrondi cohérent avec les cartes */
+  border: 3px solid var(--border-color); /* Bordure teal signature */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-title {
+  font-family: 'Fredoka', sans-serif;
+  margin-top: 0;
+  color: var(--primary-purple);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.modal-message {
+  font-family: 'Nunito', sans-serif;
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Bouton Annuler (Gris clair/Peach discret) */
+.btn-cancel {
+  background-color: var(--light-gray);
+  color: var(--text-dark);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 15px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #e8e8e8;
+  transform: translateY(-2px);
+}
+
+/* Bouton Confirmer (Rose/Rouge du thème) */
+.btn-confirm-delete {
+  background-color: var(--accent-pink);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 15px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-confirm-delete:hover {
+  background-color: #ff7777;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 157, 157, 0.4);
+}
+
+/* Animation d'entrée pour le contenu de la modal */
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes modalOut {
+  from { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  to { 
+    opacity: 0; 
+    transform: scale(0.7); /* L'élément semble s'éloigner */
+  }
+}
+
+.modal-overlay.active .modal-content {
+  animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
