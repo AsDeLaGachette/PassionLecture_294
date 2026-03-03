@@ -8,9 +8,10 @@ const bookId = props.id
 
 let imgRef = ref('')
 
+const fullName = ref('');
+
 const title = ref('')
 const nbrPage = ref('')
-const author = ref('')
 const description = ref('')
 const genre = ref('')
 const year = ref('')
@@ -25,7 +26,7 @@ onMounted(async () => {
     imgRef = response.data.img
     title.value = response.data.title
     nbrPage.value = response.data.nbrPage
-    author.value = response.data.author
+    fullName.value = `${response.data.author.firstname} ${response.data.author.lastname}`
     description.value = response.data.description
     genre.value = response.data.genre
     year.value = response.data.year
@@ -39,6 +40,11 @@ onMounted(async () => {
 
 const updateBook = async () => {
   try {
+
+    const nameParts = fullName.value.trim().split(' ');
+    const firstname = nameParts[0];
+    const lastname = nameParts.slice(1).join(' ');
+
     const response = await BookService.getBook(bookId)
     const currentBook = response.data
 
@@ -46,7 +52,10 @@ const updateBook = async () => {
       ...currentBook,
       title: title.value,
       nbrPage: nbrPage.value,
-      author: author.value,
+      author: {
+      firstname: firstname,
+      lastname: lastname
+      },
       description: description.value,
       genre: genre.value,
       year: year.value,
@@ -91,7 +100,7 @@ const updateBook = async () => {
 
             <div class="form-group">
               <label>Auteur</label>
-              <input type="text" class="form-input" v-model="author" />
+              <input type="text" class="form-input" v-model="fullName" />
             </div>
           </div>
 
