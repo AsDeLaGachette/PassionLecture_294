@@ -25,7 +25,7 @@
       "year": 2026,
       "author_id": 2,
       "genre": "Roman",
-      "user_id": 2,
+      "user_id": 1,
       "author": {
         "id": 2,
         "firstname": "Latif",
@@ -43,7 +43,7 @@
       "year": 2025,
       "author_id": 3,
       "genre": "Roman",
-      "user_id": 2,
+      "user_id": 1,
       "author": {
         "id": 3,
         "firstname": "Kyell",
@@ -60,6 +60,7 @@
       "title": "Supergoon #1",
       "year": 2026,
       "author_id": 4,
+      "user_id": 1,
       "genre": "Roman",
       "author": {
         "id": 4,

@@ -623,6 +623,14 @@ body {
   position: relative;
 }
 
+.upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* L'image remplit le cadre sans être déformée */
+  border-radius: 12px; /* Optionnel : pour arrondir les coins de l'image comme le cadre */
+  display: block;
+}
+
 .upload-box::before {
   content: '';
 }

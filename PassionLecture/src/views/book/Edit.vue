@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 const props = defineProps(['id'])
 const bookId = props.id
 
+let img = ref('')
 const title = ref('')
 const nbrPage = ref('')
 const author = ref('')
@@ -21,6 +22,7 @@ onMounted(async () => {
   try {
     const response = await BookService.getBook(bookId)
 
+    img = response.data.img
     title.value = response.data.title
     nbrPage.value = response.data.nbrPage
     author.value = response.data.author
@@ -69,7 +71,7 @@ const updateBook = async () => {
       <div class="form-left">
         <div class="upload-area">
           <div class="upload-box">
-            <div class="upload-icon">📷</div>
+            <img class :src="img" alt="">
           </div>
         </div>
       </div>
