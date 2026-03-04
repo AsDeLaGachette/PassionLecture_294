@@ -41,13 +41,13 @@ watch(
       <div class="detail-left">
         <img class="book-cover-large" :src="book?.img" alt="" />
         <div class="small-thumbnails">
-            <img
-              v-for="(imgUrl, index) in nextImages"
-              :key="index"
-              class="small-thumb"
-              :src="imgUrl"
-              alt=""
-            />
+          <img
+            v-for="(imgUrl, index) in nextImages"
+            :key="index"
+            class="small-thumb"
+            :src="imgUrl"
+            alt=""
+          />
         </div>
       </div>
 
@@ -63,40 +63,70 @@ watch(
             <span class="rating-text">4.0/5</span>
           </div>
           <div class="info-text">
+            <p><strong>{{ book.author.firstname }} {{ book.author.lastname }}</strong></p>
             <p>
-              <strong>{{ book?.author.firstname }} {{ book?.author.lastname }}</strong>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris.
             </p>
-            <p>{{ book?.description }}</p>
           </div>
 
           <div class="quality-section">
             <div class="quality-item">
-              <h3>Qualité 01</h3>
+              <h3>Description</h3>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua quis
+                {{ book.description }}
               </p>
             </div>
-            <div class="quality-item">
-              <h3>Qualité 02</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua quis
+            <div class="quality-item info-grid">
+              <div class="info-row">
+                <span class="info-label">Nombre de pages:</span>
+                <span class="info-value"> {{ book.nbrPage }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Catégorie:</span>
+                <span class="info-value"> {{ book.genre }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Année d'édition:</span>
+                <span class="info-value"> {{ book.year }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Éditeur:</span>
+                <span class="info-value"> {{ book.publisher }}</span>
+              </div>
+            </div>
+            <div class="quality-item full-width">
+              <h3>Extrait</h3>
+              <p class="excerpt-text">
+                {{  book.excerpt }}
               </p>
             </div>
-            <div class="quality-item">
-              <h3>Qualité 03</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua quis
-              </p>
-            </div>
-            <div class="quality-item">
-              <h3>Qualité 04</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua quis
-              </p>
+          </div>
+
+          <div class="reviews-section">
+            <h3 class="reviews-title">Avis des lecteurs</h3>
+            <div class="reviews-container">
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="review-author">
+                    <strong>Jean Dupont</strong>
+                  </div>
+                  <div class="review-rating">
+                    <span class="star-filled">★</span>
+                    <span class="star-filled">★</span>
+                    <span class="star-filled">★</span>
+                    <span class="star-filled">★</span>
+                    <span class="star-filled">★</span>
+                  </div>
+                </div>
+                <h4 class="review-title">Excellent livre !</h4>
+                <p class="review-text">
+                  Un livre passionnant qui m'a tenu en haleine du début à la fin. Les personnages
+                  sont bien développés et l'intrigue est captivante. Je le recommande vivement à
+                  tous les amateurs du genre.
+                </p>
+              </div>
             </div>
           </div>
           <RouterLink :to="{ name: 'ReviewAdd' }" class="btn-add-review"
