@@ -1,53 +1,67 @@
 <script setup>
 import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import BookService from '@/services/BookService'
 
-const props = defineProps(['book'])
+const route = useRoute()
+const book = ref(null)
 const nextImages = ref([])
 
-watch(
-  () => props.book,
-  async (newBook) => {
-    if (!newBook?.id) return
+async function loadBook(id) {
+    const res = await BookService.getBook(id)
+    book.value = res.data
+    loadNextImages(id)
+}
 
-    nextImages.value = []
-    const currentId = newBook.id
+async function loadNextImages(currentId) {
+  nextImages.value = []
 
-    for (let i = 1; i <= 3; i++) {
-      const id = currentId + i
+  for (let i = 1; i <= 3; i++) {
+    const id = Number(currentId) + i
       const res = await BookService.getBook(id)
       if (res.data?.img) {
-        nextImages.value.push(res.data.img)
+        nextImages.value.push({ id: res.data.id, img: res.data.img })
         if (nextImages.value.length >= 3) return
       }
-    }
+  }
 
-    let fallbackId = 1
-    while (nextImages.value.length < 3) {
-      const res = await BookService.getBook(fallbackId)
-      if (res.data?.img) {
-        nextImages.value.push(res.data.img)
-      }
-      fallbackId++
+  let fallback = 1
+  while (nextImages.value.length < 3 && fallback < 100) {
+    if (fallback !== Number(currentId)) {
+        const res = await BookService.getBook(fallback)
+        if (res.data?.img) {
+          nextImages.value.push({ id: res.data.id, img: res.data.img })
+        }
+    }
+    fallback++
+  }
+}
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (newId) {
+      loadBook(newId)
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 </script>
 
 <template>
   <main class="container detail-container">
-    <div class="detail-layout">
+    <div v-if="book" class="detail-layout">
       <div class="detail-left">
-        <img class="book-cover-large" :src="book?.img" alt="" />
+        <img class="book-cover-large" :src="book.img" alt="" />
         <div class="small-thumbnails">
-          <img
-            v-for="(imgUrl, index) in nextImages"
-            :key="index"
-            class="small-thumb"
-            :src="imgUrl"
-            alt=""
-          />
+          <RouterLink
+            v-for="item in nextImages"
+            :key="item.id"
+            :to="{ name: 'BookDetails', params: { id: item.id } }"
+            class="small-thumb-link"
+          >
+            <img class="small-thumb" :src="item.img" alt="" />
+          </RouterLink>
         </div>
       </div>
 
@@ -62,11 +76,14 @@ watch(
             <span class="star-empty">☆</span>
             <span class="rating-text">4.0/5</span>
           </div>
+
           <div class="quality-section">
             <div class="quality-item info-grid">
               <div class="info-row">
                 <span class="info-label">Auteur:</span>
-                <span class="info-value">{{ book?.author.firstname }} {{ book?.author.lastname }}</span>
+                <span class="info-value"
+                  >{{ book?.author.firstname }} {{ book?.author.lastname }}</span
+                >
               </div>
               <div class="info-row">
                 <span class="info-label">Nombre de pages:</span>
@@ -94,7 +111,7 @@ watch(
             <div class="quality-item full-width">
               <h3>Extrait</h3>
               <p class="excerpt-text">
-                {{  book?.excerpt }}
+                {{ book?.excerpt }}
               </p>
             </div>
           </div>
