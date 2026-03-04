@@ -1,40 +1,83 @@
-<template>
-    <main class="container">
-        <h2 class="page-title-small">Modifier un avis</h2>
-        
-        <div class="review-container">
-            <form class="review-form">
-                <div class="form-group">
-                    <label>Nom</label>
-                    <input type="text" class="form-input" value="Jean Dupont">
-                </div>
-
-                <div class="form-group">
-                    <label>Titre</label>
-                    <input type="text" class="form-input" value="Excellent livre !">
-                </div>
-
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-textarea" rows="6">Un livre passionnant qui m'a tenu en haleine du début à la fin. Les personnages sont bien développés et l'intrigue est captivante. Je le recommande vivement à tous les amateurs du genre.</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Note</label>
-                    <div class="rating-stars">
-                        <span class="star star-selected">★</span>
-                        <span class="star star-selected">★</span>
-                        <span class="star star-selected">★</span>
-                        <span class="star star-selected">★</span>
-                        <span class="star">☆</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-submit">Enregistrer</button>
-            </form>
-        </div>
-    </main>
-</template>
-
 <script setup>
+import { ref } from 'vue'
+import { useRoute ,useRouter } from 'vue-router'
+import ReviewService from '@/services/ReviewService'
+
+const title = ref('')
+const rating = ref(0)
+const comment = ref('')
+const date = ref('')
+const bookId = ref(null)
+onMounted(async () => {
+  try {
+    const response = await BookService.getReview(bookId)
+
+    title.value = response.data.title
+    rating.value = response.data.rating
+    comment.value = response.data.comment
+    date.value = new Date().toISOString().split('T')[0]
+    bookId.value = response.data.book_id
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+const updateReview = async () => {
+  try {
+    const updatedReview = {
+      book_id: Number(bookId),
+      title: title.value,
+      rating: rating.value,
+      comment: comment.value,
+      user_id: 1,
+      date: new Date().toISOString().split('T')[0],
+    }
+
+    await ReviewService.updateReviewReview(review.id, updatedReview)
+
+    title.value = ''
+    rating.value = ''
+    comment.value = ''
+    date.value = ''
+
+    router.push({ name: 'BookDetails', params: { id: bookId } })
+  } catch (error) {
+    console.error('Error creating review:', error)
+  }
+}
 </script>
+<template>
+  <main class="container">
+    <h2 class="page-title-small">Ajouter un avis</h2>
+
+    <div class="review-container">
+      <form class="review-form" @submit.prevent="updateReview">
+        <div class="form-group">
+          <label>Titre</label>
+          <input v-model="title" type="text" class="form-input" placeholder="Titre" />
+        </div>
+
+        <div class="form-group">
+          <label>Commentaire</label>
+          <textarea v-model="comment" class="form-textarea" rows="6" placeholder="Écrivez votre avis..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Note</label>
+          <div class="rating-stars">
+            <span
+              v-for="number in 5"
+              :key="number"
+              class="star"
+              :class="{ active: number <= rating }"
+              @click="rating = number"
+            >
+              {{ number <= rating ? '★' : '☆' }}
+            </span>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">Enregistrer</button>
+      </form>
+    </div>
+  </main>
+</template>

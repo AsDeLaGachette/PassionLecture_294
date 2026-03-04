@@ -10,11 +10,11 @@ const reviews = ref([])
 const nextImages = ref([])
 
 async function loadBook(id) {
-    const res = await BookService.getBook(id)
-    const resReviews = await ReviewService.getReviews(id)
-    reviews.value = resReviews.data
-    book.value = res.data
-    loadNextImages(id)
+  const res = await BookService.getBook(id)
+  const resReviews = await ReviewService.getReviews(id)
+  reviews.value = resReviews.data
+  book.value = res.data
+  loadNextImages(id)
 }
 
 async function loadNextImages(currentId) {
@@ -22,20 +22,20 @@ async function loadNextImages(currentId) {
 
   for (let i = 1; i <= 3; i++) {
     const id = Number(currentId) + i
-      const res = await BookService.getBook(id)
-      if (res.data?.img) {
-        nextImages.value.push({ id: res.data.id, img: res.data.img })
-        if (nextImages.value.length >= 3) return
-      }
+    const res = await BookService.getBook(id)
+    if (res.data?.img) {
+      nextImages.value.push({ id: res.data.id, img: res.data.img })
+      if (nextImages.value.length >= 3) return
+    }
   }
 
   let fallback = 1
   while (nextImages.value.length < 3 && fallback < 100) {
     if (fallback !== Number(currentId)) {
-        const res = await BookService.getBook(fallback)
-        if (res.data?.img) {
-          nextImages.value.push({ id: res.data.id, img: res.data.img })
-        }
+      const res = await BookService.getBook(fallback)
+      if (res.data?.img) {
+        nextImages.value.push({ id: res.data.id, img: res.data.img })
+      }
     }
     fallback++
   }
@@ -48,7 +48,7 @@ watch(
       loadBook(newId)
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>
 
@@ -129,8 +129,20 @@ watch(
                     <strong> Latif </strong>
                   </div>
                   <div class="review-rating">
-                    <span class="star-filled" v-for="n in review.rating" :key="'filled'+n">★</span>
-                    <span class="star-filled" v-for="n in 5 - review.rating" :key="'empty'+n">☆</span>
+                    <span class="star-filled" v-for="n in review.rating" :key="'filled' + n"
+                      >★</span
+                    >
+                    <span class="star-filled" v-for="n in 5 - review.rating" :key="'empty' + n"
+                      >☆</span
+                    >
+                  </div>
+                  <div class="review-buttons">
+                    <RouterLink
+                      :to="{ name: 'ReviewEdit', params: { id: review.id } }"
+                      class="btn-review-edit"
+                      >Modifier</RouterLink
+                    >
+                    <button class="btn-review-delete">Supprimer</button>
                   </div>
                 </div>
                 <h4 class="review-title">{{ review.title }}</h4>
