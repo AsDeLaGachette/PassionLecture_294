@@ -126,18 +126,37 @@
     {
       "id": 1,
       "book_id": 1,
-      "user": "Alice",
-      "note": 5,
+      "user_id": 1,
+      "rating": 5,
       "comment": "Un classique magnifique et intemporel.",
-      "date": "2026-02-11"
+      "date": "2026-02-11",
+      "title": "J'aime bien"
     },
     {
       "id": 2,
       "book_id": 2,
-      "user": "Bob",
-      "note": 4,
+      "user_id": 2,
+      "rating": 4,
       "comment": "Très prenant et toujours d'actualité.",
-      "date": "2026-02-10"
+      "date": "2026-02-10",
+      "title": "J'aime bien"
+    },
+    {
+      "book_id": 2,
+      "user_id": 1,
+      "rating": 4,
+      "comment": "Latifffff",
+      "date": "2026-03-04",
+      "id": 3,
+      "title": "J'aime bien"
+    },
+    {
+      "book_id": 2,
+      "title": "J'aime latif il est tout mignon",
+      "rating": 2,
+      "comment": "Cela me tiens à coeur d'éprouver mon amour envers cet ouvrage digne des plus grand tif.",
+      "date": "2026-03-04",
+      "id": 4
     }
   ]
 }

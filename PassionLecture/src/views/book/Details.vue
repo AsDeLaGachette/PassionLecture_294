@@ -2,13 +2,17 @@
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BookService from '@/services/BookService'
+import ReviewService from '@/services/ReviewService'
 
 const route = useRoute()
 const book = ref(null)
+const reviews = ref([])
 const nextImages = ref([])
 
 async function loadBook(id) {
     const res = await BookService.getBook(id)
+    const resReviews = await ReviewService.getReviews(id)
+    reviews.value = resReviews.data
     book.value = res.data
     loadNextImages(id)
 }
@@ -118,30 +122,25 @@ watch(
 
           <div class="reviews-section">
             <h3 class="reviews-title">Avis des lecteurs</h3>
-            <div class="reviews-container">
+            <div class="reviews-container" v-for="review in reviews" :key="review.id">
               <div class="review-card">
                 <div class="review-header">
                   <div class="review-author">
-                    <strong>Jean Dupont</strong>
+                    <strong> Latif </strong>
                   </div>
                   <div class="review-rating">
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
+                    <span class="star-filled" v-for="n in review.rating" :key="'filled'+n">★</span>
+                    <span class="star-filled" v-for="n in 5 - review.rating" :key="'empty'+n">☆</span>
                   </div>
                 </div>
-                <h4 class="review-title">Excellent livre !</h4>
+                <h4 class="review-title">{{ review.title }}</h4>
                 <p class="review-text">
-                  Un livre passionnant qui m'a tenu en haleine du début à la fin. Les personnages
-                  sont bien développés et l'intrigue est captivante. Je le recommande vivement à
-                  tous les amateurs du genre.
+                  {{ review.comment }}
                 </p>
               </div>
             </div>
           </div>
-          <RouterLink :to="{ name: 'ReviewAdd' }" class="btn-add-review"
+          <RouterLink :to="{ name: 'ReviewAdd', params: { id: book.id } }" class="btn-add-review"
             >Ajouter un avis</RouterLink
           >
         </div>

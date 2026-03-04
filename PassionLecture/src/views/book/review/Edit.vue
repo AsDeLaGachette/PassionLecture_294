@@ -37,5 +37,4 @@
 </template>
 
 <script setup>
-// Ton futur code ici
 </script>
