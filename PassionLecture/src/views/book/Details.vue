@@ -8,6 +8,7 @@ const route = useRoute()
 const book = ref(null)
 const reviews = ref([])
 const nextImages = ref([])
+const reviewToDelete = ref('')
 
 async function loadBook(id) {
   const res = await BookService.getBook(id)
@@ -50,6 +51,35 @@ watch(
   },
   { immediate: true },
 )
+
+const openModal = (id) => {
+  reviewToDelete.value = id
+  document.getElementById('deleteModal').classList.add('active')
+}
+
+const closeModal = () => {
+  document.getElementById('deleteModal').classList.remove('active')
+}
+
+window.onclick = function(event) {
+      const modal = document.getElementById("deleteModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+    };
+
+const confirmDelete = async () => {
+  try {
+    await ReviewService.deleteReview(reviewToDelete.value)
+
+    reviews.value = reviews.value.filter((review) => review.id !== reviewToDelete.value)
+
+    closeModal()
+  } catch (error) {
+    console.error('Erreur suppression:', error)
+  }
+}
+
 </script>
 
 <template>
@@ -142,7 +172,7 @@ watch(
                       class="btn-review-edit"
                       >Modifier</RouterLink
                     >
-                    <button class="btn-review-delete">Supprimer</button>
+                    <button class="btn-review-delete" @click="openModal(review.id)">Supprimer</button>
                   </div>
                 </div>
                 <h4 class="review-title">{{ review.title }}</h4>
@@ -155,6 +185,20 @@ watch(
           <RouterLink :to="{ name: 'ReviewAdd', params: { id: book.id } }" class="btn-add-review"
             >Ajouter un avis</RouterLink
           >
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal-content">
+        <h3 class="modal-title">Confirmer la suppression</h3>
+        <p class="modal-message">
+          Es-tu sûr de vouloir supprimer cet article ? Cette action est irréversible.
+        </p>
+        <div class="modal-actions">
+          <button class="btn-cancel" @click="closeModal()">Annuler</button>
+          <button class="btn-confirm-delete" @click="confirmDelete()">
+            Supprimer définitivement
+          </button>
         </div>
       </div>
     </div>

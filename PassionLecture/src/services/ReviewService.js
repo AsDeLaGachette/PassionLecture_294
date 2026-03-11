@@ -22,7 +22,7 @@ export default {
   updateReview(reviewId, updatedReview) {
     return apiClient.put(`reviews/${reviewId}`, updatedReview)
   },
-  deleteReview(bookId, reviewId) {
-    return apiClient.delete(`/books/${bookId}/reviews/${reviewId}`)
+  deleteReview(reviewId) {
+    return apiClient.delete(`/reviews/${reviewId}`)
   },
 }
