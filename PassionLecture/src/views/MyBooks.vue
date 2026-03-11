@@ -27,11 +27,18 @@ const closeModal = () => {
   document.getElementById('deleteModal').classList.remove('active')
 }
 
+window.onclick = function(event) {
+      const modal = document.getElementById("deleteModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+    };
+
 const confirmDelete = async () => {
   try {
     await BookService.deleteBook(bookIdToDelete.value)
 
-    userBooks.value = userBooks.value.filter((b) => b.id !== bookIdToDelete.value)
+    userBooks.value = userBooks.value.filter((book) => book.id !== bookIdToDelete.value)
 
     closeModal()
   } catch (error) {

@@ -2,15 +2,20 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BookService from '@/services/BookService'
+import ReviewService from '@/services/ReviewService'
 
 const route = useRoute()
 const book = ref(null)
+const reviews = ref([])
 const nextImages = ref([])
+const reviewToDelete = ref('')
 
 async function loadBook(id) {
-    const res = await BookService.getBook(id)
-    book.value = res.data
-    loadNextImages(id)
+  const res = await BookService.getBook(id)
+  const resReviews = await ReviewService.getReviews(id)
+  reviews.value = resReviews.data
+  book.value = res.data
+  loadNextImages(id)
 }
 
 async function loadNextImages(currentId) {
@@ -18,20 +23,20 @@ async function loadNextImages(currentId) {
 
   for (let i = 1; i <= 3; i++) {
     const id = Number(currentId) + i
-      const res = await BookService.getBook(id)
-      if (res.data?.img) {
-        nextImages.value.push({ id: res.data.id, img: res.data.img })
-        if (nextImages.value.length >= 3) return
-      }
+    const res = await BookService.getBook(id)
+    if (res.data?.img) {
+      nextImages.value.push({ id: res.data.id, img: res.data.img })
+      if (nextImages.value.length >= 3) return
+    }
   }
 
   let fallback = 1
   while (nextImages.value.length < 3 && fallback < 100) {
     if (fallback !== Number(currentId)) {
-        const res = await BookService.getBook(fallback)
-        if (res.data?.img) {
-          nextImages.value.push({ id: res.data.id, img: res.data.img })
-        }
+      const res = await BookService.getBook(fallback)
+      if (res.data?.img) {
+        nextImages.value.push({ id: res.data.id, img: res.data.img })
+      }
     }
     fallback++
   }
@@ -44,8 +49,36 @@ watch(
       loadBook(newId)
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
+
+const openModal = (id) => {
+  reviewToDelete.value = id
+  document.getElementById('deleteModal').classList.add('active')
+}
+
+const closeModal = () => {
+  document.getElementById('deleteModal').classList.remove('active')
+}
+
+window.onclick = function(event) {
+      const modal = document.getElementById("deleteModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+    };
+
+const confirmDelete = async () => {
+  try {
+    await ReviewService.deleteReview(reviewToDelete.value)
+
+    reviews.value = reviews.value.filter((review) => review.id !== reviewToDelete.value)
+
+    closeModal()
+  } catch (error) {
+    console.error('Erreur suppression:', error)
+  }
+}
 
 const averageRating = computed(() => {
   const reviews = props.book?.reviews || []
@@ -129,32 +162,53 @@ const averageRating = computed(() => {
 
           <div class="reviews-section">
             <h3 class="reviews-title">Avis des lecteurs</h3>
-            <div class="reviews-container">
+            <div class="reviews-container" v-for="review in reviews" :key="review.id">
               <div class="review-card">
                 <div class="review-header">
                   <div class="review-author">
-                    <strong>Jean Dupont</strong>
+                    <strong> Latif </strong>
                   </div>
                   <div class="review-rating">
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
-                    <span class="star-filled">★</span>
+                    <span class="star-filled" v-for="n in review.rating" :key="'filled' + n"
+                      >★</span
+                    >
+                    <span class="star-filled" v-for="n in 5 - review.rating" :key="'empty' + n"
+                      >☆</span
+                    >
+                  </div>
+                  <div class="review-buttons">
+                    <RouterLink
+                      :to="{ name: 'ReviewEdit', params: { id: review.id } }"
+                      class="btn-review-edit"
+                      >Modifier</RouterLink
+                    >
+                    <button class="btn-review-delete" @click="openModal(review.id)">Supprimer</button>
                   </div>
                 </div>
-                <h4 class="review-title">Excellent livre !</h4>
+                <h4 class="review-title">{{ review.title }}</h4>
                 <p class="review-text">
-                  Un livre passionnant qui m'a tenu en haleine du début à la fin. Les personnages
-                  sont bien développés et l'intrigue est captivante. Je le recommande vivement à
-                  tous les amateurs du genre.
+                  {{ review.comment }}
                 </p>
               </div>
             </div>
           </div>
-          <RouterLink :to="{ name: 'ReviewAdd' }" class="btn-add-review"
+          <RouterLink :to="{ name: 'ReviewAdd', params: { id: book.id } }" class="btn-add-review"
             >Ajouter un avis</RouterLink
           >
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal-content">
+        <h3 class="modal-title">Confirmer la suppression</h3>
+        <p class="modal-message">
+          Es-tu sûr de vouloir supprimer cet article ? Cette action est irréversible.
+        </p>
+        <div class="modal-actions">
+          <button class="btn-cancel" @click="closeModal()">Annuler</button>
+          <button class="btn-confirm-delete" @click="confirmDelete()">
+            Supprimer définitivement
+          </button>
         </div>
       </div>
     </div>

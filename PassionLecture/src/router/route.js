@@ -69,12 +69,12 @@ const router = createRouter({
           component: ReviewLayout,
           children: [
             {
-              path: '/edit/:id',
+              path: 'edit',
               name: 'ReviewEdit',
               component: ReviewEdit,
             },
             {
-              path: '/add/:id',
+              path: 'add',
               name: 'ReviewAdd',
               component: ReviewAdd,
             },

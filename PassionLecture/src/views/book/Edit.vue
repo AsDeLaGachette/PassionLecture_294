@@ -90,30 +90,30 @@ const updateBook = async () => {
           <div class="form-row">
             <div class="form-group">
               <label>Titre</label>
-              <input type="text" class="form-input" v-model="title" />
+              <input type="text" class="form-input" v-model="title" required="true"/>
             </div>
 
             <div class="form-group">
               <label>Nombre de pages</label>
-              <input type="number" class="form-input" v-model="nbrPage" />
+              <input type="number" class="form-input" v-model="nbrPage" required="true"/>
             </div>
 
             <div class="form-group">
               <label>Auteur</label>
-              <input type="text" class="form-input" v-model="fullName" />
+              <input type="text" class="form-input" v-model="fullName" required="true"/>
             </div>
           </div>
 
           <div class="form-group full-width">
             <label>Description</label>
-            <textarea class="form-textarea" rows="3" v-model="description"></textarea>
+            <textarea class="form-textarea" rows="3" v-model="description"></textarea required="true">
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>Catégorie</label>
-              <select class="form-select" v-model="genre">
-                <option disabled value="">Sélectionner</option>
+              <select class="form-select" v-model="genre" required="true">
+                <option disabled value="">Sélectionner</option >
                 <option>Roman</option>
                 <option>Science-fiction</option>
                 <option>Fantastique</option>
@@ -130,18 +130,18 @@ const updateBook = async () => {
 
             <div class="form-group">
               <label>Année d'édition</label>
-              <input type="number" class="form-input" v-model="year" />
+              <input type="number" class="form-input" v-model="year" required="true"/>
             </div>
 
             <div class="form-group">
               <label>Éditeur</label>
-              <input type="text" class="form-input" v-model="publisher" />
+              <input type="text" class="form-input" v-model="publisher" required="true"/>
             </div>
           </div>
 
           <div class="form-group full-width">
             <label>Extrait</label>
-            <textarea class="form-textarea" rows="2" v-model="excerpt"></textarea>
+            <textarea class="form-textarea" rows="2" v-model="excerpt"></textarea required="true">
           </div>
             <button type="submit" class="btn-submit">Enregistrer</button>
         </form>
