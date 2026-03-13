@@ -56,17 +56,24 @@
       "author": "DavidSottasLeBarbare1"
     },
     {
-      "id": "44fbb309-89ca-497a-89d0-73546302f997",
-      "type": "commitpatch",
-      "sha": "7b2aa677e3a9fb04df5852fcb9fded4e41ffc456",
-      "url": "https://github.com/AsDeLaGachette/PassionLecture_294/commit/7b2aa677e3a9fb04df5852fcb9fded4e41ffc456",
-      "name": "feat(rating-rendering): added rating rendering based on average",
-      "description": "Cette tâche m'a pris beaucoup de temps car j'essayais d'optimiser au mieux que je pouvais la fonction GetStarStatus.",
-      "date": "2026-03-11T10:22:00.000Z",
-      "duration": 144,
+      "id": "b415b673-9728-4590-bf68-4d60f90b8c98",
+      "type": "commitless",
+      "name": "feat(genre): added books showing by categories",
+      "description": "",
+      "date": "2026-03-13T20:11:00.000Z",
+      "duration": 32,
       "status": "Done",
-      "author": "DavidSottasLeBarbare1",
-      "patch": true
+      "author": "DavidSottasLeBarbare1"
+    },
+    {
+      "id": "e373edf2-ddda-419f-a8e9-4b2b74e9c713",
+      "type": "commitless",
+      "name": "feat(footer): added contacts in footer",
+      "description": "",
+      "date": "2026-03-13T20:34:00.000Z",
+      "duration": 22,
+      "status": "Done",
+      "author": "DavidSottasLeBarbare1"
     }
   ]
 }
