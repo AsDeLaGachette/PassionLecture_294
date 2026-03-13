@@ -210,6 +210,15 @@
       "user_id": 1,
       "date": "2026-03-11",
       "id": 9
+    },
+    {
+      "book_id": 1,
+      "title": "J'aime",
+      "rating": 3,
+      "comment": "J'adore le livre",
+      "user_id": 1,
+      "date": "2026-03-13",
+      "id": 10
     }
   ]
 }

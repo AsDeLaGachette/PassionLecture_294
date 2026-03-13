@@ -1278,6 +1278,13 @@ button.btn-review-delete {
   box-shadow: 0 5px 15px rgba(255, 157, 157, 0.4);
 }
 
+.category-title {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 /* Animation d'entrée pour le contenu de la modal */
 @keyframes modalPop {
   from { opacity: 0; transform: scale(0.8); }
@@ -1298,3 +1305,4 @@ button.btn-review-delete {
 .modal-overlay.active .modal-content {
   animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
