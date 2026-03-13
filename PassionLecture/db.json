@@ -120,22 +120,6 @@
       "author_id": null,
       "user_id": 1,
       "id": 7
-    },
-    {
-      "title": "",
-      "nbrPage": 56,
-      "author": {
-        "firstname": "Sottas",
-        "lastname": "Latif"
-      },
-      "description": "Supprimer définitivement",
-      "genre": "Fantastique",
-      "year": 1414,
-      "publisher": "Krasniqi ki",
-      "excerpt": "Supprimer définitivement",
-      "author_id": null,
-      "user_id": 1,
-      "id": 8
     }
   ],
   "reviews": [

@@ -84,6 +84,52 @@
       "duration": 15,
       "status": "Done",
       "author": "latifcodess"
+    },
+    {
+      "id": "2318025e-dfbe-4fe3-9773-106046818ebf",
+      "type": "commitpatch",
+      "sha": "04c2cf8f801668c1c03628eac932398f62429249",
+      "url": "https://github.com/AsDeLaGachette/PassionLecture_294/commit/04c2cf8f801668c1c03628eac932398f62429249",
+      "name": "chore(Readme): convertis md en pdf",
+      "description": "",
+      "date": "2026-03-13T22:01:00.000Z",
+      "duration": 5,
+      "status": "Done",
+      "author": "latifcodess",
+      "patch": true
+    },
+    {
+      "id": "c76980dc-8a6c-4312-869c-fd60d860785e",
+      "type": "commitless",
+      "name": "Révision",
+      "description": "J'ai revisé certain concept avant le test pratique pour être sur d'être prêt.",
+      "date": "2026-03-10T12:55:00.000Z",
+      "duration": 45,
+      "status": "Done",
+      "author": "latifcodess"
+    },
+    {
+      "id": "cb697c45-a7ad-4b2a-b50b-dda86a726b3b",
+      "type": "commitless",
+      "name": "Test pratique",
+      "description": "Nous avons fais le test pratique",
+      "date": "2026-03-10T16:25:00.000Z",
+      "duration": 205,
+      "status": "Done",
+      "author": "latifcodess"
+    },
+    {
+      "id": "81470edd-71a7-4237-a52f-01085b73b421",
+      "type": "commitpatch",
+      "sha": "651378208be5177e909fa5ffe2137caeb6bba625",
+      "url": "https://github.com/AsDeLaGachette/PassionLecture_294/commit/651378208be5177e909fa5ffe2137caeb6bba625",
+      "name": "doc(Readme): ajout des maquettes, Planification des tâches, structure du code, fonctionnalités",
+      "description": "",
+      "date": "2026-03-11T10:25:00.000Z",
+      "duration": 205,
+      "status": "WIP",
+      "author": "latifcodess",
+      "patch": true
     }
   ]
 }
