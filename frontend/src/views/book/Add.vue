@@ -1,7 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import BookService from '@/services/BookService'
 import { useRouter } from 'vue-router'
+import GenreService from '@/services/GenreService'
+
+const genres = ref([])
 
 const title = ref('')
 const nbrPage = ref('')
@@ -26,17 +29,16 @@ const submitBook = async () => {
       nbrPage: parseInt(nbrPage.value),
       author: {
         firstname: firstname,
-        lastname: lastname
+        lastname: lastname,
       },
       description: description.value,
-      genre: genre.value,
       year: parseInt(year.value),
       publisher: publisher.value,
       excerpt: excerpt.value,
       author_id: author_id.value,
-      user_id: user_id
+      genre_id: genre.value,
+      user_id: user_id,
     }
-
     await BookService.addBook(newBook)
 
     title.value = ''
@@ -53,6 +55,19 @@ const submitBook = async () => {
     console.error('Error creating book:', error)
   }
 }
+
+onMounted(async () => {
+  try {
+    const response = await GenreService.getGenres()
+    genres.value = response.data
+    for (let genre of genres.value) {
+      const res = await ReviewService.getReviews(genre.id)
+      allReviews.value[genre.id] = res.data
+    }
+  } catch (err) {
+    console.error(err)
+  }
+})
 </script>
 
 <template>
@@ -73,17 +88,35 @@ const submitBook = async () => {
           <div class="form-row">
             <div class="form-group">
               <label>Titre</label>
-              <input type="text" class="form-input" placeholder="Titre" v-model="title" required="true"/>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Titre"
+                v-model="title"
+                required="true"
+              />
             </div>
 
             <div class="form-group">
               <label>Nombre de pages</label>
-              <input type="number" class="form-input" placeholder="250" v-model="nbrPage" required="true"/>
+              <input
+                type="number"
+                class="form-input"
+                placeholder="250"
+                v-model="nbrPage"
+                required="true"
+              />
             </div>
 
             <div class="form-group">
               <label>Auteur</label>
-              <input type="text" class="form-input" placeholder="Prénom et Nom" v-model="authorName" required="true"/>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Prénom et Nom"
+                v-model="authorName"
+                required="true"
+              />
             </div>
           </div>
 
@@ -94,7 +127,8 @@ const submitBook = async () => {
               rows="3"
               placeholder="Résumé du livre..."
               v-model="description"
-            ></textarea required="true">
+            >
+</textarea required="true">
           </div>
 
           <div class="form-row">
@@ -102,17 +136,7 @@ const submitBook = async () => {
               <label>Catégorie</label>
               <select class="form-select" v-model="genre" required="true">
                 <option disabled value="">Sélectionner</option>
-                <option>Roman</option>
-                <option>Science-fiction</option>
-                <option>Fantastique</option>
-                <option>Policier</option>
-                <option>Histoire</option>
-                <option>Développement personnel</option>
-                <option>Poésie</option>
-                <option>Essai</option>
-                <option>Enfant</option>
-                <option>Bandes dessinées</option>
-                <option>Manga</option>
+                <option v-for="genre in genres" :value="genre.id">{{ genre?.title }}</option>
               </select>
             </div>
 
@@ -141,9 +165,10 @@ const submitBook = async () => {
               placeholder="Extrait du livre..."
               v-model="excerpt"
               required="true"
-            ></textarea>
+            ></textarea
+            >
           </div>
-            <button type="submit" class="btn-submit">Ajouter</button>
+          <button type="submit" class="btn-submit">Ajouter</button>
         </form>
       </div>
     </div>
