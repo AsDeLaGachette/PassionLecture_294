@@ -11,9 +11,23 @@ const genre = ref('')
 const year = ref('')
 const publisher = ref('')
 const excerpt = ref('')
+const cover = ref(null)
+const coverPreview = ref(null)
 const user_id = 1
 const author_id = ref(null)
 const router = useRouter()
+
+const handleCoverChange = (event) => {
+  const file = event.target.files?.[0]
+  if (file) {
+    cover.value = file
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      coverPreview.value = e.target?.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
 
 const submitBook = async () => {
   try {
@@ -33,6 +47,7 @@ const submitBook = async () => {
       year: parseInt(year.value),
       publisher: publisher.value,
       excerpt: excerpt.value,
+      cover: cover.value,
       author_id: author_id.value,
       user_id: user_id
     }
@@ -47,11 +62,13 @@ const submitBook = async () => {
     year.value = ''
     publisher.value = ''
     excerpt.value = ''
+    cover.value = null
+    coverPreview.value = null
 
     router.push({ name: 'MyBooks' })
   } catch (error) {
     console.error('Error creating book:', error)
-  }
+  } 
 }
 </script>
 
@@ -62,9 +79,19 @@ const submitBook = async () => {
     <div class="form-layout">
       <div class="form-left">
         <div class="upload-area">
-          <div class="upload-box">
-            <div class="upload-icon">📷</div>
-          </div>
+          <label for="cover-input" class="upload-box">
+            <img v-if="coverPreview" :src="coverPreview" alt="Cover preview" class="cover-preview" />
+            <div v-else class="upload-icon-container">
+              <div class="upload-icon">📷</div>
+            </div>
+          </label>
+          <input 
+            id="cover-input"
+            type="file" 
+            accept="image/*" 
+            @change="handleCoverChange"
+            style="display: none"
+          />
         </div>
       </div>
 
@@ -102,17 +129,17 @@ const submitBook = async () => {
               <label>Catégorie</label>
               <select class="form-select" v-model="genre" required="true">
                 <option disabled value="">Sélectionner</option>
-                <option>Roman</option>
-                <option>Science-fiction</option>
-                <option>Fantastique</option>
-                <option>Policier</option>
-                <option>Histoire</option>
-                <option>Développement personnel</option>
-                <option>Poésie</option>
-                <option>Essai</option>
-                <option>Enfant</option>
-                <option>Bandes dessinées</option>
-                <option>Manga</option>
+                <option value="1">Roman</option>
+                <option value="2">Science-fiction</option>
+                <option value="3">Fantastique</option>
+                <option value="4">Policier</option>
+                <option value="5">Histoire</option>
+                <option value="6">Développement personnel</option>
+                <option value="7">Poésie</option>
+                <option value="8">Essai</option>
+                <option value="9">Enfant</option>
+                <option value="10">Bandes dessinées</option>
+                <option value="11">Manga</option>
               </select>
             </div>
 
