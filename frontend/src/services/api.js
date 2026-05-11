@@ -4,7 +4,6 @@ const apiClient = axios.create({
   withCredentials: false,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
   },
 })
 
@@ -12,6 +11,9 @@ apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('auth_token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+  }
+  if (!(config.data instanceof FormData)) {
+    config.headers['Content-Type'] = 'application/json'
   }
   return config
 })

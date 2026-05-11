@@ -3,21 +3,23 @@ import { ref, onMounted } from 'vue'
 import BookService from '@/services/BookService'
 import { useRouter } from 'vue-router'
 import GenreService from '@/services/GenreService'
+import AuthorService from '@/services/AuthorService'
+import AuthService from '@/services/AuthService'
 
 const genres = ref([])
+const authors = ref([])
 
 const title = ref('')
 const nbrPage = ref('')
-const authorName = ref('')
 const description = ref('')
-const genre = ref('')
 const year = ref('')
 const publisher = ref('')
 const excerpt = ref('')
 const cover = ref(null)
 const coverPreview = ref(null)
-const user_id = 1
-const author_id = ref(null)
+const user_id = ref(null)
+const author_id = ref('')
+const genre_id = ref('')
 const router = useRouter()
 
 const handleCoverChange = (event) => {
@@ -34,53 +36,49 @@ const handleCoverChange = (event) => {
 
 const submitBook = async () => {
   try {
-    const nameParts = authorName.value.trim().split(' ')
-    const firstname = nameParts[0]
-    const lastname = nameParts.slice(1).join(' ')
-
-    const newBook = {
-      title: title.value,
-      nbrPage: parseInt(nbrPage.value),
-      author: {
-        firstname: firstname,
-        lastname: lastname,
-      },
-      description: description.value,
-      year: parseInt(year.value),
-      publisher: publisher.value,
-      excerpt: excerpt.value,
-      cover: cover.value,
-      author_id: author_id.value,
-      genre_id: genre.value,
-      user_id: user_id,
+    if (!cover.value) {
+      return
     }
-    await BookService.addBook(newBook)
+
+    const formData = new FormData()
+    formData.append('title', title.value)
+    formData.append('nbrPage', parseInt(nbrPage.value))
+    formData.append('description', description.value)
+    formData.append('year', parseInt(year.value))
+    formData.append('publisher', publisher.value)
+    formData.append('excerpt', excerpt.value)
+    formData.append('cover', cover.value)
+    formData.append('authorId', parseInt(author_id.value))
+    formData.append('genreId', parseInt(genre_id.value))
+    formData.append('userId', user_id.value)
+    
+    await BookService.addBook(formData)
 
     title.value = ''
     nbrPage.value = ''
-    authorName.value = ''
     description.value = ''
-    genre.value = ''
     year.value = ''
     publisher.value = ''
     excerpt.value = ''
     cover.value = null
     coverPreview.value = null
+    genre_id.value = ''
+    author_id.value = ''
 
     router.push({ name: 'MyBooks' })
   } catch (error) {
     console.error('Error creating book:', error)
-  } 
+  }
 }
 
 onMounted(async () => {
   try {
-    const response = await GenreService.getGenres()
-    genres.value = response.data
-    for (let genre of genres.value) {
-      const res = await ReviewService.getReviews(genre.id)
-      allReviews.value[genre.id] = res.data
-    }
+    const genreResponse = await GenreService.getGenres()
+    genres.value = genreResponse.data
+    const authorResponse = await AuthorService.getAuthors()
+    authors.value = authorResponse.data
+    const userResponse = await AuthService.getCurrentUser()
+    user_id.value = userResponse.data.id
   } catch (err) {
     console.error(err)
   }
@@ -95,15 +93,20 @@ onMounted(async () => {
       <div class="form-left">
         <div class="upload-area">
           <label for="cover-input" class="upload-box">
-            <img v-if="coverPreview" :src="coverPreview" alt="Cover preview" class="cover-preview" />
+            <img
+              v-if="coverPreview"
+              :src="coverPreview"
+              alt="Cover preview"
+              class="cover-preview"
+            />
             <div v-else class="upload-icon-container">
               <div class="upload-icon">📷</div>
             </div>
           </label>
-          <input 
+          <input
             id="cover-input"
-            type="file" 
-            accept="image/*" 
+            type="file"
+            accept="image/*"
             @change="handleCoverChange"
             style="display: none"
           />
@@ -137,13 +140,12 @@ onMounted(async () => {
 
             <div class="form-group">
               <label>Auteur</label>
-              <input
-                type="text"
-                class="form-input"
-                placeholder="Prénom et Nom"
-                v-model="authorName"
-                required="true"
-              />
+              <select class="form-select" v-model="author_id" required="true">
+                <option disabled value="">Sélectionner</option>
+                <option v-for="author in authors" :value="author.id">
+                  {{ author?.firstname }} {{ author?.lastname }}
+                </option>
+              </select>
             </div>
           </div>
 
@@ -155,13 +157,13 @@ onMounted(async () => {
               placeholder="Résumé du livre..."
               v-model="description"
             >
-</textarea required="true">
+            </textarea required="true">
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>Catégorie</label>
-              <select class="form-select" v-model="genre" required="true">
+              <select class="form-select" v-model="genre_id" required="true">
                 <option disabled value="">Sélectionner</option>
                 <option v-for="genre in genres" :value="genre.id">{{ genre?.title }}</option>
               </select>
