@@ -80,7 +80,7 @@ const updateBook = async () => {
       <div class="form-left">
         <div class="upload-area">
           <div class="upload-box">
-            <img class :src="img" alt="">
+            <img class :src="`/api/books/${bookId}/cover`" alt="">
           </div>
         </div>
       </div>

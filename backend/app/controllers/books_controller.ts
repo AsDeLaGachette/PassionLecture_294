@@ -29,6 +29,7 @@ export default class BooksController {
       .where('id', params.id)
       .preload('author')
       .firstOrFail()
+    book.cover
     return book
   }
 
@@ -66,4 +67,16 @@ export default class BooksController {
 
     return books
   }
+
+  async getCover({ params, response }: HttpContext) {
+  const book = await Book.query()
+    .select('cover')
+    .where('id', params.id)
+    .firstOrFail()
+
+  response.header('Content-Type', 'image/jpeg')
+  response.header('Cache-Control', 'public, max-age=86400')
+
+  return response.send(book.cover)
+}
 }

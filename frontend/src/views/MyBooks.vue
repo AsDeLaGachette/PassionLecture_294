@@ -70,7 +70,7 @@ const confirmDelete = async () => {
             >
             <button class="btn-delete" @click="openModal(book.id)">Supprimer</button>
           </div>
-          <img :src="book.img" alt="" />
+          <img :src="`/api/books/${book.id}/cover`" alt="skibidi" />
         </div>
         <div class="book-info">
           <h3 class="book-title">{{ book.title }}</h3>

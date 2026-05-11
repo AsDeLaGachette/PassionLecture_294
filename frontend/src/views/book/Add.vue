@@ -14,9 +14,23 @@ const genre = ref('')
 const year = ref('')
 const publisher = ref('')
 const excerpt = ref('')
+const cover = ref(null)
+const coverPreview = ref(null)
 const user_id = 1
 const author_id = ref(null)
 const router = useRouter()
+
+const handleCoverChange = (event) => {
+  const file = event.target.files?.[0]
+  if (file) {
+    cover.value = file
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      coverPreview.value = e.target?.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
 
 const submitBook = async () => {
   try {
@@ -35,6 +49,7 @@ const submitBook = async () => {
       year: parseInt(year.value),
       publisher: publisher.value,
       excerpt: excerpt.value,
+      cover: cover.value,
       author_id: author_id.value,
       genre_id: genre.value,
       user_id: user_id,
@@ -49,11 +64,13 @@ const submitBook = async () => {
     year.value = ''
     publisher.value = ''
     excerpt.value = ''
+    cover.value = null
+    coverPreview.value = null
 
     router.push({ name: 'MyBooks' })
   } catch (error) {
     console.error('Error creating book:', error)
-  }
+  } 
 }
 
 onMounted(async () => {
@@ -77,9 +94,19 @@ onMounted(async () => {
     <div class="form-layout">
       <div class="form-left">
         <div class="upload-area">
-          <div class="upload-box">
-            <div class="upload-icon">📷</div>
-          </div>
+          <label for="cover-input" class="upload-box">
+            <img v-if="coverPreview" :src="coverPreview" alt="Cover preview" class="cover-preview" />
+            <div v-else class="upload-icon-container">
+              <div class="upload-icon">📷</div>
+            </div>
+          </label>
+          <input 
+            id="cover-input"
+            type="file" 
+            accept="image/*" 
+            @change="handleCoverChange"
+            style="display: none"
+          />
         </div>
       </div>
 
