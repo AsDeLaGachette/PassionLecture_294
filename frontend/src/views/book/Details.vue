@@ -119,7 +119,7 @@ const confirmDelete = async () => {
               </div>
               <div class="info-row">
                 <span class="info-label">Catégorie:</span>
-                <span class="info-value"> {{ book?.genre }}</span>
+                <span class="info-value"> {{ book.genre?.title }}</span>
               </div>
               <div class="info-row">
                 <span class="info-label">Année d'édition:</span>
