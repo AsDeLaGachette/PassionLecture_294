@@ -27,7 +27,7 @@ export default class BooksController {
   async show({ params }: HttpContext) {
     const book = await Book.query()
       .where('id', params.id)
-      .preload('author')
+      .preload('author').preload('genre')
       .firstOrFail()
     book.cover
     return book

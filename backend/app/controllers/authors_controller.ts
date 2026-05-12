@@ -10,4 +10,8 @@ export default class AuthorsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {}
+
+  async store({ request }: HttpContext){
+    
+  }
 }
