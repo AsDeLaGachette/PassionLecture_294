@@ -37,6 +37,6 @@ router
         router.post('logout', [AuthController, 'logout']).use(middleware.auth())
       })
       .prefix('user')
-      router.get('/me', [AuthController, 'getCurrentUser']).use(middleware.auth())
+      router.get('/me', [AuthController, 'me']).use(middleware.auth())
   })
   .prefix('api')

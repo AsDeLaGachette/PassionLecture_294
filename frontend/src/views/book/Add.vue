@@ -39,7 +39,6 @@ const submitBook = async () => {
     if (!cover.value) {
       return
     }
-
     const formData = new FormData()
     formData.append('title', title.value)
     formData.append('nbrPage', parseInt(nbrPage.value))
@@ -50,10 +49,9 @@ const submitBook = async () => {
     formData.append('cover', cover.value)
     formData.append('authorId', parseInt(author_id.value))
     formData.append('genreId', parseInt(genre_id.value))
-    formData.append('userId', user_id.value)
+    formData.append('userId', parseInt(user_id.value))
     
     await BookService.addBook(formData)
-
     title.value = ''
     nbrPage.value = ''
     description.value = ''
@@ -77,8 +75,12 @@ onMounted(async () => {
     genres.value = genreResponse.data
     const authorResponse = await AuthorService.getAuthors()
     authors.value = authorResponse.data
-    const userResponse = await AuthService.getCurrentUser()
-    user_id.value = userResponse.data.id
+    try {
+      const userResponse = await AuthService.getCurrentUser()
+      user_id.value = userResponse.data.user.id
+    } catch (userErr) {
+      console.error('Failed to fetch user:', userErr)
+    }
   } catch (err) {
     console.error(err)
   }
