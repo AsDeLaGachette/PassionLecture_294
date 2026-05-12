@@ -1,0 +1,11 @@
+meta {
+  name: List Reviews
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/books/{{bookId}}/reviews
+  body: none
+  auth: none
+}

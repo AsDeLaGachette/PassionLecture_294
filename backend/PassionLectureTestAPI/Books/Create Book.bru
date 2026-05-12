@@ -1,0 +1,27 @@
+meta {
+  name: Create Book
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/books
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  title: Capitaine Préverenges
+  year: 2026
+  authorId: 1
+  genreId: 1
+  publisher: Skibidi Tif
+  excerpt: Capitain dave tu est trop fort oh mon dieu. S'exclama Tif
+  nbrPage: 67
+  description: Suivez les aventures de Capitaine Préverenges
+  cover: @file(/chemin/absolu/vers/ton-image.png)
+}
