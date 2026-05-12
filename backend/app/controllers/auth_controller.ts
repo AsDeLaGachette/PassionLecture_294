@@ -23,7 +23,7 @@ export default class AuthController {
   /**
    * Display form to create a new record
    */
-  async register({ request, response, auth }: HttpContext) {
+  async register({ request, response }: HttpContext) {
     // Validation des données utilisateurs
     const payload = await request.validateUsing(registerValidator)
     // Création de l'utilisateur
@@ -52,5 +52,11 @@ export default class AuthController {
     await User.accessTokens.delete(user, token)
     // Confirme à l'utilisateur que le logout est un succès
     return response.ok({ message: 'Logged out' })
+  }
+  async me({ auth, response }: HttpContext) {
+    // Récupère l'utilisateur connecté/authentifié
+    const user = auth.getUserOrFail()
+    // Retourne les informations de l'utilisateur
+    return response.ok({ user })
   }
 }

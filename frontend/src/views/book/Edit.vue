@@ -2,12 +2,12 @@
 import { ref, onMounted } from 'vue'
 import BookService from '@/services/BookService'
 import { useRouter } from 'vue-router'
+import AuthorService from '@/services/AuthorService'
 
 const props = defineProps(['id'])
 const bookId = props.id
 
 let img = ref('')
-const fullName = ref('');
 
 const title = ref('')
 const nbrPage = ref('')
@@ -17,16 +17,18 @@ const year = ref('')
 const publisher = ref('')
 const excerpt = ref('')
 const author_id = ref(null)
+const authors = ref([])
 const router = useRouter()
 
 onMounted(async () => {
   try {
     const response = await BookService.getBook(bookId)
+    const authorResponse = await AuthorService.getAuthors()
+    authors.value = authorResponse.data
 
     img = response.data.img
     title.value = response.data.title
     nbrPage.value = response.data.nbrPage
-    fullName.value = `${response.data.author.firstname} ${response.data.author.lastname}`
     description.value = response.data.description
     genre.value = response.data.genre
     year.value = response.data.year
@@ -40,11 +42,6 @@ onMounted(async () => {
 
 const updateBook = async () => {
   try {
-
-    const nameParts = fullName.value.trim().split(' ');
-    const firstname = nameParts[0];
-    const lastname = nameParts.slice(1).join(' ');
-
     const response = await BookService.getBook(bookId)
     const currentBook = response.data
 
@@ -52,16 +49,12 @@ const updateBook = async () => {
       ...currentBook,
       title: title.value,
       nbrPage: nbrPage.value,
-      author: {
-      firstname: firstname,
-      lastname: lastname
-      },
       description: description.value,
-      genre: genre.value,
+      genreId: parseInt(genre.value),
       year: year.value,
       publisher: publisher.value,
       excerpt: excerpt.value,
-      author_id: author_id.value,
+      authorId: parseInt(author_id.value),
     }
 
     await BookService.updateBook(bookId, updatedBook)
@@ -100,7 +93,10 @@ const updateBook = async () => {
 
             <div class="form-group">
               <label>Auteur</label>
-              <input type="text" class="form-input" v-model="fullName" required="true"/>
+              <select class="form-select" v-model="author_id" required="true">
+                <option disabled value="">Sélectionner</option>
+                <option v-for="author in authors" :value="author.id">{{ author?.firstname }} {{ author?.lastname }}</option>
+              </select>
             </div>
           </div>
 

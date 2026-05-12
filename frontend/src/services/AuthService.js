@@ -18,4 +18,8 @@ export default {
     apiClient.post(`/user/logout`)
     localStorage.removeItem('auth_token')
   },
+
+  getCurrentUser() {
+    return apiClient.get('/me')
+  },
 }
