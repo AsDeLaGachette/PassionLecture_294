@@ -14,11 +14,11 @@ export default class BooksController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {
+  async store({ request, response }: HttpContext) {
     const data = await request.validateUsing(BookValidator)
     const coverBuffer = await fs.readFile(data.cover.tmpPath!)
     const book = await Book.create({ ...data, cover: coverBuffer })
-    return book
+    return response.created(book)
   }
 
   /**
@@ -48,9 +48,10 @@ export default class BooksController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {
+  async destroy({ params, response}: HttpContext) {
     const book = await Book.findOrFail(params.id)
-    return book.delete()
+    book.delete()
+    return response.noContent() 
   }
 
   /**

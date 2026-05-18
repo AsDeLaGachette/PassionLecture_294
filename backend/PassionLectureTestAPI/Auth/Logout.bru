@@ -1,16 +1,21 @@
 meta {
   name: Logout
   type: http
-  seq: 2
+  seq: 3
 }
 
 post {
-  url: {{url}}api/user/logout
+  url: {{baseUrl}}/api/user/logout
   body: none
-  auth: inherit
+  auth: bearer
 }
 
-settings {
-  encodeUrl: true
-  timeout: 0
+auth:bearer {
+  token: {{token}}
+}
+
+script:post-response {
+  if (res.getStatus() >= 200 && res.getStatus() < 300) {
+    bru.setEnvVar("token", "");
+  }
 }

@@ -1,0 +1,11 @@
+meta {
+  name: Get Book Cover
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/books/{{bookId}}/cover
+  body: none
+  auth: none
+}

@@ -1,0 +1,28 @@
+meta {
+  name: Update Book
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/api/books/{{bookId}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  title: Capitaine Préverenges
+  year: 2026
+  authorId: 1
+  genreId: 1
+  publisher: cacacacaca
+  excerpt: Capitain dave tu est trop fort oh mon dieu. S'exclama Tif
+  nbrPage: 67
+  description: Suivez les aventures de Capitaine Préverenges
+  cover: @file(C:\Users\pl84wyk\Downloads\vaV6J.jpg)
+  userId: 5
+}
