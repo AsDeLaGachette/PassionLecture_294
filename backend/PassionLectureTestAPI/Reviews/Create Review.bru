@@ -1,7 +1,7 @@
 meta {
   name: Create Review
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
@@ -16,7 +16,10 @@ auth:bearer {
 
 body:json {
   {
+    "title": "Kewl",
     "rating": 5,
-    "comment": "Un livre magnifique, à lire absolument !"
+    "comment": "Un livre magnifique, à lire absolument !",
+    "userId": 1,
+    ""
   }
 }

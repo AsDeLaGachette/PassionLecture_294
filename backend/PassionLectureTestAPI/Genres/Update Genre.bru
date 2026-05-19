@@ -1,0 +1,21 @@
+meta {
+  name: Update Genre
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/genres/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Krasniqi"
+  }
+}
