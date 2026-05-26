@@ -2,12 +2,14 @@ import fs from 'node:fs/promises'
 import Book from '#models/book'
 import type { HttpContext } from '@adonisjs/core/http'
 import { BookValidator } from '#validators/book'
+import db from '@adonisjs/lucid/services/db'
+
 export default class BooksController {
   /**
    * Display a list of resource
    */
   async index({}: HttpContext) {
-    const response = await Book.query().orderBy('title', 'asc')
+    const response = await Book.query().preload('author').preload('genre').orderBy('title', 'asc')
     return response
   }
 
@@ -38,10 +40,17 @@ export default class BooksController {
    */
   async update({ params, request }: HttpContext) {
     const data = await request.validateUsing(BookValidator)
-    const coverBuffer = await fs.readFile(data.cover.tmpPath!)
-
+    
     const book = await Book.findOrFail(params.id)
-    book.merge({ ...data, cover: coverBuffer })
+    
+    if (data.cover) {
+      const coverBuffer = await fs.readFile(data.cover.tmpPath!)
+      book.merge({ ...data, cover: coverBuffer })
+    } else {
+      const { cover, ...dataWithoutCover } = data
+      book.merge(dataWithoutCover)
+    }
+    
     return book.save()
   }
 
@@ -70,14 +79,16 @@ export default class BooksController {
   }
 
   async getCover({ params, response }: HttpContext) {
-  const book = await Book.query()
+  const result = await db.from('books')
     .select('cover')
     .where('id', params.id)
-    .firstOrFail()
+    .first()
+
+  if (!result?.cover) return response.notFound()
 
   response.header('Content-Type', 'image/jpeg')
-  response.header('Cache-Control', 'public, max-age=86400')
+  response.header('Cache-Control', 'no-store')
 
-  return response.send(book.cover)
+  return response.send(result.cover)
 }
 }

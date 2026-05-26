@@ -35,7 +35,7 @@ onMounted( async () => {
             :to="{ name: 'BookDetails', params: { bookId: book.id } }"
             class="book-card"
           >
-            <div class="book-thumbnail"><img :src="`/api/books/${book.id}/cover`" alt="skibidi" /></div>
+            <div class="book-thumbnail"><img :src="`/api/books/${book.id}/cover?t=${Date.now()}`" alt="skibidi" /></div>
             <div class="book-info">
               <h3 class="book-title">{{ book.title }}</h3>
               <p class="book-author">{{ book.author?.firstname }} {{ book.author?.lastname }}</p>

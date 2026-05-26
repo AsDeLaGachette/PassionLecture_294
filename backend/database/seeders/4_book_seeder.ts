@@ -2,16 +2,23 @@ import Author from '#models/author'
 import Book from '#models/book'
 import Genre from '#models/genre'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import fs from 'node:fs/promises'
+
+import { readFile } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
 export default class extends BaseSeeder {
   async run() {
     const authors = await Author.all()
     const genres = await Genre.all()
     // temp
-    const image1 = Buffer.from(await (await fetch('https://i.postimg.cc/y8kpZqL0/capprev-(1).png')).arrayBuffer())
-    const image2 = Buffer.from(await (await fetch('https://i.postimg.cc/wTMpSKcb/wolvermine.jpg')).arrayBuffer())
-    const image3 = Buffer.from(await (await fetch('https://i.postimg.cc/q7XSNQxD/montagnelangue.jpg')).arrayBuffer())
-    const image4 = Buffer.from(await (await fetch('https://i.postimg.cc/4NmDW6XX/supergoon.jpg')).arrayBuffer())
+    const image1 = Buffer.from(await readFile(join(__dirname, 'assets/capprev.png')))
+    const image2 = Buffer.from(await readFile(join(__dirname, 'assets/wolvermine.jpg')))
+    const image3 = Buffer.from(await readFile(join(__dirname, 'assets/montagnelangue.jpg')))
+    const image4 = Buffer.from(await readFile(join(__dirname, 'assets/supergoon.jpg')))
+    
     await Book.createMany([
       {
         id: 1,

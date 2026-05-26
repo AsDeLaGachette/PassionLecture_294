@@ -1,11 +1,11 @@
 meta {
-  name: My Books
+  name: Delete Author
   type: http
-  seq: 4
+  seq: 5
 }
 
-get {
-  url: {{baseUrl}}/api/me/books
+delete {
+  url: {{baseUrl}}/api/authors/2
   body: none
   auth: bearer
 }
