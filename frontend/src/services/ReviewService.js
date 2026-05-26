@@ -4,10 +4,10 @@ export default {
   getReviews(bookId) {
     return apiClient.get(`/books/${bookId}/reviews`)
   },
-  getReview(reviewId) {
+  getReview(bookId, reviewId) {
     return apiClient.get(`/books/${bookId}/reviews/${reviewId}`)
   },
-  addReview(bookId, review) {
+  addReview(bookId, review) { 
     return apiClient.post(`/books/${bookId}/reviews`, review)
   },
   updateReview(bookId, reviewId, updatedReview) {

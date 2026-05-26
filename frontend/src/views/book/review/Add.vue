@@ -1,36 +1,26 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute ,useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import ReviewService from '@/services/ReviewService'
 
 const title = ref('')
 const rating = ref(0)
 const comment = ref('')
-const date = ref('')
 const router = useRouter()
-const bookId = useRoute().params.id
+const bookId = useRoute().params.bookId
 
 const submitReview = async () => {
   try {
     const newReview = {
-      book_id: Number(bookId),
+      bookId: Number(bookId),
       title: title.value,
       rating: rating.value,
       comment: comment.value,
-      user_id: 1,
-      date: new Date().toISOString().split('T')[0],
     }
-
-    await ReviewService.addReview(newReview)
-
-    title.value = ''
-    rating.value = ''
-    comment.value = ''
-    date.value = ''
-
-    router.push({ name: 'BookDetails', params: { id: bookId } })
+    await ReviewService.addReview(bookId, newReview)
+    router.push({ name: 'BookDetails', params: { bookId } })
   } catch (error) {
-    console.error('Error creating review:', error)
+    console.error('Error creating review:', error.response?.data)
   }
 }
 </script>

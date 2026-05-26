@@ -1,54 +1,39 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute ,useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import ReviewService from '@/services/ReviewService'
 
-const props = defineProps(['id'])
-const reviewId = props.id
+const props = defineProps(['reviewId', 'bookId'])
+const router = useRouter()
 
 const title = ref('')
 const rating = ref(0)
 const comment = ref('')
-const date = ref('')
-const bookId = ref(0)
-const router = useRouter()
 
 onMounted(async () => {
   try {
-    const response = await ReviewService.getReview(reviewId)
-
+    const response = await ReviewService.getReview(props.bookId, props.reviewId)
     title.value = response.data.title
     rating.value = response.data.rating
     comment.value = response.data.comment
-    date.value = new Date().toISOString().split('T')[0]
-    bookId.value = response.data.book_id
   } catch (err) {
-    console.error(err)
+    console.error(err.response?.data)
   }
 })
 
 const updateReview = async () => {
   try {
     const updatedReview = {
-      book_id: Number(bookId.value),
-      id: Number(reviewId),
+      bookId: Number(props.bookId),
+      userId: 1,
       title: title.value,
       rating: rating.value,
       comment: comment.value,
-      user_id: 1,
-      date: new Date().toISOString().split('T')[0],
     }
-
-    await ReviewService.updateReview(reviewId, updatedReview)
-
-    title.value = ''
-    rating.value = ''
-    comment.value = ''
-    date.value = ''
-
-    router.push({ name: 'BookDetails', params: { id: bookId.value } })
+    await ReviewService.updateReview(props.bookId, props.reviewId, updatedReview)
+    router.push({ name: 'BookDetails', params: { id: props.bookId } })
   } catch (error) {
-    console.error('Error creating review:', error)
+    console.error('Error updating review:', error.response?.data)
   }
 }
 </script>

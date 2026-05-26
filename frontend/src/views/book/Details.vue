@@ -35,7 +35,7 @@ async function loadNextImages(currentId) {
 }
 
 watch(
-  () => route.params.id,
+  () => route.params.bookId,
   (newId) => {
     if (newId) {
       loadBook(newId)
@@ -162,7 +162,7 @@ const confirmDelete = async () => {
                   </div>
                   <div class="review-buttons">
                     <RouterLink
-                      :to="{ name: 'ReviewEdit', params: { id: review.id } }"
+                      :to="{ name: 'ReviewEdit', params: { reviewId: review.id } }"
                       class="btn-review-edit"
                       >Modifier</RouterLink
                     >
