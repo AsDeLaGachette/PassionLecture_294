@@ -87,6 +87,26 @@
       "status": "Done",
       "author": "DavidSottasLeBarbare1",
       "patch": true
+    },
+    {
+      "id": "b27752b1-d720-4ac5-8ab4-c25e1b33d81f",
+      "type": "commitless",
+      "name": "Requetes Bruno",
+      "description": "Nous avons fait la plupart de requètes Bruno",
+      "date": "2026-05-12T16:44",
+      "duration": 89,
+      "status": "Done",
+      "author": "DavidSottasLeBarbare1"
+    },
+    {
+      "id": "7d982e02-0fd8-40e7-8bc4-aad45a7b7d42",
+      "type": "commitless",
+      "name": "Problème images",
+      "description": "J'ai fixé un problème des fetchs des images dans le book seeder",
+      "date": "2026-05-18T12:24:00.000Z",
+      "duration": 114,
+      "status": "Done",
+      "author": "DavidSottasLeBarbare1"
     }
   ]
 }

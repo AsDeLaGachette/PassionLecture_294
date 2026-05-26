@@ -29,6 +29,13 @@ const router = createRouter({
       path: '/books/add',
       name: 'BookAdd',
       component: BookAdd,
+      beforeEnter: (to, from, next) => {
+        if (!!localStorage.getItem('auth_token')) {
+          next()
+        } else {
+          next({ name: 'Login' })
+        }
+      },
     },
     {
       path: '/login',

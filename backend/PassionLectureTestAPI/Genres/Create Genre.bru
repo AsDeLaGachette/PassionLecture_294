@@ -1,0 +1,21 @@
+meta {
+  name: Create Genre
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/genres
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Latif"
+  }
+}

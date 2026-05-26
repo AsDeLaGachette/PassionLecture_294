@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onActivated } from 'vue'
 import BookService from '@/services/BookService'
 import { getStarStatus } from '@/utils/starStatus'
 import ReviewService from '@/services/ReviewService'
@@ -9,21 +9,27 @@ const router = useRouter()
 const userBooks = ref([])
 const bookIdToDelete = ref(null)
 const allReviews = ref({})
+const cacheBuster = ref(Date.now())
 
-onMounted(async () => {
+const loadBooks = async () => {
   try {
-  const response = await BookService.getBookFromUser()
-
-  userBooks.value = response.data
-  for (let book of userBooks.value) {
-    const response = await ReviewService.getReviews(book.id)
-    allReviews.value[book.id] = response.data
-  }
+    const response = await BookService.getBookFromUser()
+    userBooks.value = response.data
+    for (let book of userBooks.value) {
+      const res = await ReviewService.getReviews(book.id)
+      allReviews.value[book.id] = res.data
+    }
   } catch (error) {
-  if (error.response?.status === 401) {
-       router.push('/login')
+    if (error.response?.status === 401) {
+      router.push('/login')
     }
   }
+}
+
+onMounted(loadBooks)
+onActivated(() => {
+  cacheBuster.value = Date.now()
+  loadBooks()
 })
 
 const openModal = (id) => {
@@ -70,7 +76,7 @@ const confirmDelete = async () => {
             >
             <button class="btn-delete" @click="openModal(book.id)">Supprimer</button>
           </div>
-          <img :src="`/api/books/${book.id}/cover`" alt="skibidi" />
+          <img :src="`/api/books/${book.id}/cover?t=${cacheBuster.value}`" alt="skibidi" />
         </div>
         <div class="book-info">
           <h3 class="book-title">{{ book.title }}</h3>

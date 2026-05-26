@@ -1,11 +1,11 @@
 meta {
-  name: My Books
+  name: Delete Genre
   type: http
-  seq: 4
+  seq: 5
 }
 
-get {
-  url: {{baseUrl}}/api/me/books
+delete {
+  url: {{baseUrl}}/api/genres/23
   body: none
   auth: bearer
 }

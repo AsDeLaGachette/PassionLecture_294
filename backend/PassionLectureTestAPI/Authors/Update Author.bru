@@ -1,0 +1,22 @@
+meta {
+  name: Update Author
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/authors/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "firstname": "Latif",
+    "lastname": "Braimi"
+  }
+}
