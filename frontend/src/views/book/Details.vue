@@ -62,7 +62,7 @@ window.onclick = function (event) {
 
 const confirmDelete = async () => {
   try {
-    await ReviewService.deleteReview(reviewToDelete.value)
+    await ReviewService.deleteReview(route.params.bookId, reviewToDelete.value)
 
     reviews.value = reviews.value.filter((review) => review.id !== reviewToDelete.value)
 
