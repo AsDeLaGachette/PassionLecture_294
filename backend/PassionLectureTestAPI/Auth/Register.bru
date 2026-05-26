@@ -5,20 +5,24 @@ meta {
 }
 
 post {
-  url: {{url}}api/user/register
+  url: {{baseUrl}}/api/user/register
   body: json
-  auth: inherit
+  auth: none
 }
 
 body:json {
   {
-    "email": "david@gmail.com",
-    "password": "caca",
-    "fullName": "davidbg"
+    "fullName": "John Doe",
+    "email": "john@example.com",
+    "password": "password123"
   }
 }
 
-settings {
-  encodeUrl: true
-  timeout: 0
+script:post-response {
+  if (res.getStatus() >= 200 && res.getStatus() < 300) {
+    const body = res.getBody();
+    if (body && body.token) {
+      bru.setEnvVar("token", body.token.token || body.token);
+    }
+  }
 }

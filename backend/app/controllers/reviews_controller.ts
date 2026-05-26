@@ -26,7 +26,7 @@ export default class ReviewsController {
 
     const review = await Review.create({
       ...data,
-      bookId: params.book_id,
+      bookId: Number(params.book_id),
       userId: user.id,
     })
 

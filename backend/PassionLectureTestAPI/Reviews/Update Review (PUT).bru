@@ -1,0 +1,25 @@
+meta {
+  name: Update Review (PUT)
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/books/{{bookId}}/reviews/{{reviewId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "rating": 5,
+    "title": "Dj baby face",
+    "comment": "is officially in the house",
+    "bookId": 4,
+    "userId": 1
+  }
+}

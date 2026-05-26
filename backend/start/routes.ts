@@ -9,11 +9,13 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
-import BooksController from '#controllers/books_controller'
-import AuthorsController from '#controllers/authors_controller'
-import ReviewsController from '#controllers/reviews_controller'
-import AuthController from '#controllers/auth_controller'
-import GenresController from '#controllers/genres_controller'
+import AutoSwagger from 'adonis-autoswagger'
+import swagger from '#config/swagger'
+const BooksController = () => import('#controllers/books_controller')
+const AuthorsController = () => import('#controllers/authors_controller')
+const ReviewsController = () => import('#controllers/reviews_controller')
+const AuthController = () => import('#controllers/auth_controller')
+const GenresController = () => import('#controllers/genres_controller')
 
 router
   .group(() => {
@@ -40,3 +42,11 @@ router
       router.get('/me', [AuthController, 'me']).use(middleware.auth())
   })
   .prefix('api')
+
+router.get('swagger', async () => {
+  return AutoSwagger.default.docs(router.toJSON(), swagger)
+})
+
+router.get('docs', async () => {
+  return AutoSwagger.default.ui('/swagger', swagger)
+})

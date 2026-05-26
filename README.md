@@ -13,136 +13,305 @@
     Chef de projet : Grégory CHARMIER
 </div><br><br>
 
-## Table des Matières
+## Table des matières
+
 1. [Introduction](#introduction)
 2. [Analyse](#analyse)
-3. [Reéalisation](#réalisation)
-4. [Conclusion](#conclusion)
+   - [Planification des tâches](#planification-des-tâches)
+   - [Analyse de l'API REST](#analyse-de-lapi-rest)
+   - [Analyse de la base de données](#analyse-de-la-base-de-données)
+   - [Architecture](#architecture)
+3. [Réalisation](#réalisation)
+   - [Authentification et gestion des rôles](#authentification-et-gestion-des-rôles)
+   - [Sécurité](#sécurité)
+4. [Tests](#tests)
+5. [Conclusion](#conclusion)
+   - [Organisation Git / GitHub](#organisation-git--github)
+   - [Conclusion générale](#conclusion-générale)
+   - [Conclusion personnelle](#conclusion-personnelle)
+   - [Critique de la planification](#critique-de-la-planification)
+
+---
 
 ## Introduction
 
-Nous avons fais un site qui s'intitule : Passion Lecture. C'est un site qui permet de poster des ouvrages de tout type pour que les gens puissent les noter et mettre des commentaires. il est possible d'ajouter un ouvrage, le modifier et le supprimer. Le site est codé en Vue.js avec une simulation de backend en utilisant json-server.
+PassionLecture est une application web permettant aux utilisateurs de partager, découvrir et commenter des ouvrages littéraires de toutes catégories. Chaque utilisateur peut créer un compte, ajouter des livres avec leur couverture, les associer à un auteur et un genre, puis consulter ou laisser des avis notés sur les ouvrages des autres membres.
+
+Le projet est découpé en deux parties distinctes. Le **frontend** est développé en **Vue.js 3** avec l'API Composition et communique avec le backend via des requêtes HTTP. Le **backend** est développé avec **AdonisJS 6** (TypeScript) et expose une API REST sécurisée. La persistance des données est assurée par une base de données **MySQL**, pilotée par l'ORM Lucid intégré à AdonisJS.
+
+Ce projet fait suite à une première version entièrement frontend utilisant `json-server` pour simuler un backend. L'objectif de cette itération est de remplacer cette simulation par un vrai backend structuré, avec authentification, validation des données et base de données relationnelle.
+
+> **Fonctionnalités manquantes :** La gestion des rôles (distinction admin / utilisateur), la complétion du CRUD des avis côté frontend ainsi que la recherche de livres n'ont pas été implémentées dans cette version et constituent les principales pistes d'amélioration futures.
+
+---
 
 ## Analyse
 
-### Maquettes
-
-<img src="./img/acceuil.png" height="400">
-<br>
-
-Notre page d'accueil contenant un titre et  les 5 derniers ouvrages (cliquables). les ouvrages ont un titre une petite descripition et une note.
-
-<img src="./img/detail.png" height="400">
-<br>
-
-Cette page s'affiche quand on clique sur un livre. il y la note, les informations sur le livre, les avis et un bouton pour ajouter un avis.
-
-<img src="./img/edit.png" height="400">
-<br>
-
-Une page avec un formulaire pour modifier les informations d'un livre. Il y a une page similaire pour ajouter des livres.
-
-<img src="./img/librairie.png" height="400">
-<br>
-
-Une page avec tout les livres trié par catégories.
-
-<img src="./img/meslivres.png" height="400">
-<br>
-
-Une page pour voir les livre posté par sois même.
-
-<img src="./img/login.png" height="400">
-<br>
-
-Une page pour ce connecter.
-
-<img src="./img/signin.png" height="400">
-<br>
-
-Une page pour créer un compte.
-
-<img src="./img/review.png" height="400">
-<br>
-
-un formulaire pour ajouter un avis sur un livre.
-
 ### Planification des tâches
 
-Nous avons écris pleins de tâches au tout debut du projet et les avons assigné au fur et à mesure que le projet avançait. Nous avons biensur ajouté de nouvelles tâches au cours du projet.
+La gestion des tâches est réalisée via **GitHub Projects**, ce qui permet au chef de projet de suivre l'évolution en temps réel. Les tâches sont organisées en colonnes (To Do / In Progress / Done) et assignées à chaque membre selon les sprints.
 
-<img src="./img/backlog.png" height="400">
+> Lien vers le tableau de bord : [GitHub Projects – PassionLecture](https://github.com/AsDeLaGachette/PassionLecture/projects)
 
-### Structure du code
+Au démarrage du projet, les grandes tâches ont été définies (mise en place du backend, migrations, contrôleurs, authentification, intégration frontend/backend) et affinées en sous-tâches au fur et à mesure de l'avancement.
 
-Nous avons repris la structure de base en ajoutant de nouveaux fichiers `.vue` dans le dossier : `PassionLecture/src/views` afin d’avoir un nombre de pages en corrélation avec nos maquettes.  
+---
 
-Nous avons deux services présents dans le dossier : `PassionLecture/src/services`.  
-Un service sert à faire les requêtes HTTP pour les livres et l’autre pour les avis.  
+### Analyse de l'API REST
 
-Nous avons deux composants présents dans le dossier : `PassionLecture/src/components`, qui sont le header et le footer, car ils sont présents sur toutes les pages.  
+L'API est préfixée par `/api`. La documentation interactive est accessible via `/docs` (Swagger UI généré automatiquement avec `adonis-autoswagger`).
 
-Nous avons des routes présentes dans le dossier : `PassionLecture/src/router` qui permettent de rediriger les utilisateurs vers les différents composants, en mettant par exemple sur un bouton :
+#### Authentification
 
-```html
-<router-link :to="{ name: 'composant' }">(Code du bouton HTML)</router-link>
+| Verbe | URI | Auth requise | Corps JSON |
+|:------|:----|:------------:|:-----------|
+| `POST` | `/api/user/register` | Non | `{ "email": "...", "password": "...", "fullName": "..." }` |
+| `POST` | `/api/user/login` | Non | `{ "email": "...", "password": "..." }` |
+| `POST` | `/api/user/logout` | Oui | — |
+| `GET` | `/api/me` | Oui | — |
+
+#### Livres
+
+| Verbe | URI | Auth requise | Corps JSON |
+|:------|:----|:------------:|:-----------|
+| `GET` | `/api/books` | Non | — |
+| `GET` | `/api/books/:id` | Non | — |
+| `GET` | `/api/books/:id/cover` | Non | — |
+| `GET` | `/api/me/books` | Oui | — |
+| `POST` | `/api/books` | Oui | `multipart/form-data` : `title`, `year`, `publisher`, `excerpt`, `nbrPage`, `description`, `cover` (fichier), `genreId`, `authorId`, `userId` |
+| `PUT` | `/api/books/:id` | Oui | Idem POST |
+| `DELETE` | `/api/books/:id` | Oui | — |
+
+#### Avis (Reviews)
+
+| Verbe | URI | Auth requise | Corps JSON |
+|:------|:----|:------------:|:-----------|
+| `GET` | `/api/books/:book_id/reviews` | Non | — |
+| `GET` | `/api/books/:book_id/reviews/:id` | Non | — |
+| `POST` | `/api/books/:book_id/reviews` | Oui | `{ "title": "...", "rating": 4, "comment": "..." }` |
+| `PUT` | `/api/books/:book_id/reviews/:id` | Oui | `{ "title": "...", "rating": 4, "comment": "..." }` |
+| `DELETE` | `/api/books/:book_id/reviews/:id` | Oui | — |
+
+#### Auteurs & Genres
+
+| Verbe | URI | Auth requise | Corps JSON |
+|:------|:----|:------------:|:-----------|
+| `GET` | `/api/authors` | Non | — |
+| `GET` | `/api/authors/:id` | Non | — |
+| `POST` | `/api/authors` | Non | `{ "firstname": "...", "lastname": "..." }` |
+| `PUT` | `/api/authors/:id` | Non | `{ "firstname": "...", "lastname": "..." }` |
+| `DELETE` | `/api/authors/:id` | Non | — |
+| `GET` | `/api/genres` | Non | — |
+
+---
+
+### Analyse de la base de données
+
+#### MCD (Modèle Conceptuel de Données)
+
+Le MCD est disponible dans le fichier `doc/MCD.loo` (outil Looping). Voici les entités et associations principales :
+
+```
+UTILISATEUR ──< écrit >── BOOKS ──< possède >── GENRE
+                 │
+                 └──< reçoit >── REVIEWS
+                 
+AUTHORS ──< écrit par >── BOOKS
+
+UTILISATEUR ──< rédige >── REVIEWS
 ```
 
-### Analyse des routes
+Les relations définies dans les modèles AdonisJS (Lucid) :
 
-| **Nom** | **Verbe HTTP** | **URL** | **Envoyer du JSON** |
-| :--- | :--- | :--- | :--- |
-| **Récuperer tout les livres** | ```GET``` | ```/api/books``` | ```NON``` |
-| **Modifier un livre** | ```PUT``` | ```/api/books/:id``` | ```OUI``` |
-| **Ajouter un livre** | ```POST``` | ```/api/books``` | ```OUI``` |
-| **Supprimer un livre** | ```DELETE``` | ```/api/books/:id``` | ```NON``` |
-| **Voir les details d'un livre** | ```GET``` | ```/api/books/:id``` | ```NON``` |
-| **Ajouter un avis** | ```POST``` | ```/api/books/:id/reviews``` | ```OUI``` |
-| **Modifier un avis** | ```PUT``` | ```/api/books/:id/reviews``` | ```OUI``` |
-| **Ajouter un auteur** | ```POST``` | ```/api/authors``` | ```OUI``` |
-| **Voir les auteurs** | ```GET``` | ```/api/authors``` | ```NON``` |
-| **Supprimer un auteur** | ```DELETE``` | ```/api/authors/:id``` | ```NON``` |
+| Modèle | Relation | Cible | Clé étrangère |
+|:-------|:---------|:------|:--------------|
+| `Book` | `belongsTo` | `Genre` | `genre_id` |
+| `Book` | `belongsTo` | `Author` | `author_id` |
+| `Book` | `belongsTo` | `User` | `user_id` |
+| `Book` | `hasMany` | `Review` | — |
+| `Review` | `belongsTo` | `User` | `user_id` |
+| `Review` | `belongsTo` | `Book` | `book_id` |
+| `User` | `hasMany` | `Book` | — |
+| `User` | `hasMany` | `Review` | — |
+
+#### MLD (Modèle Logique de Données)
+
+```
+users(id, full_name, email, password, created_at, updated_at)
+auth_access_tokens(id, tokenable_id → users.id, ...)
+genres(id, title)
+authors(id, firstname, lastname)
+books(id, title, year, publisher, excerpt, nbr_page, description, cover,
+      genre_id → genres.id, author_id → authors.id, user_id → users.id,
+      created_at, updated_at)
+reviews(id, title, rating, comment,
+        user_id → users.id, book_id → books.id,
+        created_at, updated_at)
+```
+
+#### MPD (Modèle Physique de Données)
+
+Les migrations AdonisJS (dossier `backend/database/migrations/`) reflètent exactement ce MPD. Les contraintes de clés étrangères sont définies avec `onDelete('CASCADE')` : la suppression d'un utilisateur supprime ses livres et ses avis ; la suppression d'un livre supprime ses avis.
+
+---
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Navigateur                               │
+│                                                                   │
+│   ┌─────────────────────────────────────┐                        │
+│   │         Frontend – Vue.js 3          │                        │
+│   │  (Composition API, Vue Router,       │                        │
+│   │   Axios, Pinia)                      │                        │
+│   └──────────────┬──────────────────────┘                        │
+└──────────────────┼──────────────────────────────────────────────-┘
+                   │  Requêtes HTTP (JSON / multipart)
+                   │  Bearer Token (OAT) dans les headers
+                   ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  Backend – AdonisJS 6 (TypeScript)               │
+│                                                                   │
+│  ┌────────────┐   ┌──────────────┐   ┌────────────────────────┐  │
+│  │  Routeur   │──▶│ Middlewares  │──▶│     Contrôleurs        │  │
+│  │ /api/...   │   │ (Auth, CORS, │   │ (Books, Reviews,       │  │
+│  └────────────┘   │  ForceJSON)  │   │  Auth, Authors, Genre) │  │
+│                   └──────────────┘   └────────────┬───────────┘  │
+│                                                   │               │
+│                                      ┌────────────▼───────────┐  │
+│                                      │   Modèles – Lucid ORM  │  │
+│                                      │ (Book, Review, User,   │  │
+│                                      │  Author, Genre)        │  │
+│                                      └────────────┬───────────┘  │
+└───────────────────────────────────────────────────┼─────────────-┘
+                                                    │  SQL (Knex)
+                                                    ▼
+                                    ┌───────────────────────────┐
+                                    │     Base de données MySQL  │
+                                    │  (users, books, reviews,   │
+                                    │   authors, genres,         │
+                                    │   auth_access_tokens)      │
+                                    └───────────────────────────┘
+```
+
+---
 
 ## Réalisation
 
-### Fonctionnalités
+### Authentification et gestion des rôles
 
-Pour afficher les livres sur la page d'accueil, nous faisons appel à un service qui effectue une requête `GET` sur tous les livres, puis nous utilisons un `v-if` dans la partie HTML pour afficher les 5 derniers.
+#### Authentification
 
-Pour afficher tous les livres, nous faisons simplement appel au même service qu'auparavant.
+L'authentification repose sur les **OAT (Opaque Access Tokens)** fournis par le package `@adonisjs/auth`. Lors de la connexion ou de l'inscription, le backend génère un token opaque unique qui est retourné au client. Ce token doit ensuite être transmis dans le header `Authorization: Bearer <token>` pour toutes les requêtes protégées.
 
-Pour ajouter un livre, nous faisons appel à un service qui effectue une requête `POST`. Ensuite, nous faisons des liaisons bidirectionnelles avec des `v-model` sur le formulaire.
+**Flux d'inscription (`POST /api/user/register`) :**
+1. Les données (`email`, `password`, `fullName`) sont validées par VineJS.
+2. L'email est vérifié comme unique en base de données.
+3. Le mot de passe est haché automatiquement via le mixin `withAuthFinder` (algorithme Scrypt).
+4. Un token OAT est créé et retourné avec les informations de l'utilisateur.
 
-Pour modifier un livre, nous faisons d'abord appel à un service qui effectue une requête `GET` afin de récupérer les informations du livre. Ensuite, nous appelons un service qui effectue une requête `PUT`. Comme précédemment, nous utilisons des liaisons bidirectionnelles avec des `v-model` sur le formulaire.
+**Flux de connexion (`POST /api/user/login`) :**
+1. Les credentials sont validés par VineJS.
+2. `User.verifyCredentials(email, password)` vérifie le hash du mot de passe.
+3. Un token OAT est créé et retourné au client.
 
-Pour supprimer un livre, il y a un bouton "Supprimer" qui appelle une fonction ouvrant une fenêtre de confirmation et récupérant l'ID du livre. Ensuite, le bouton "Supprimer" dans la fenêtre de confirmation appelle une fonction qui utilise un service effectuant une requête `DELETE`.
+**Flux de déconnexion (`POST /api/user/logout`) :**
+1. Le middleware `auth` vérifie le token Bearer.
+2. L'identifiant du token courant est récupéré via `auth.user?.currentAccessToken.identifier`.
+3. Le token est supprimé de la table `auth_access_tokens` via `User.accessTokens.delete()`.
 
-Pour afficher les détails d'un livre, nous faisons appel à un service qui effectue une requête `GET` avec l'ID du livre en paramètre afin d'afficher les informations correspondantes. Dans cette page de détails, nous affichons également les avis en utilisant un service qui effectue une requête `GET`.
+Les routes protégées (création/modification/suppression de livres et d'avis, logout, `/me`) sont sécurisées via `.use(middleware.auth())` dans le fichier de routes.
 
-La logique pour la gestion des avis est similaire à celle des livres : nous utilisons différents services qui effectuent des requêtes HTTP (`GET`, `POST`, `PUT` et `DELETE`) afin de récupérer, ajouter, modifier ou supprimer des avis.
+#### Gestion des rôles
 
-### Git
+> **Fonctionnalité non implémentée.** Dans la version actuelle, il n'existe pas de distinction entre un utilisateur standard et un administrateur. Tous les utilisateurs authentifiés ont les mêmes droits d'écriture. La mise en place d'un système de rôles (ex. : seul le propriétaire d'un livre peut le modifier/supprimer, les admins peuvent tout gérer) constitue une amélioration prioritaire pour la prochaine version.
 
-Pour optimiser notre organisation sur Git, nous nous coordonnons d'abord sur la répartition des tâches. Chacun travaille ensuite sur sa propre branche afin d'éviter tout conflit lors des commits intermédiaires.
+---
 
-Lorsqu'un de nous termine sa tâche, il ouvre une Pull Request pour merge son code (le premier merge se fait normalement sans problème). En revanche, lorsque l'autre termine, des conflits peuvent apparaître : dans ce cas, nous effectuons une revue à deux pour analyser et résoudre les conflits ensemble avant de valider le merge.
+### Sécurité
+
+Plusieurs mesures ont été mises en place pour sécuriser l'application :
+
+**Hachage des mots de passe – Scrypt**
+Les mots de passe ne sont jamais stockés en clair. AdonisJS utilise l'algorithme **Scrypt** (via le driver `@adonisjs/core/hash`) avec les paramètres : `cost: 16384`, `blockSize: 8`, `parallelization: 1`. Le champ `password` est marqué `serializeAs: null` dans le modèle User, ce qui garantit qu'il n'est jamais inclus dans les réponses JSON.
+
+**Validation des entrées – VineJS**
+Toutes les données reçues par l'API sont validées à l'aide de **VineJS** avant d'être traitées :
+- Les emails sont normalisés et leur unicité est vérifiée en base.
+- Les mots de passe ont une longueur minimale et maximale.
+- Les champs numériques (année, nombre de pages, note) ont des bornes définies.
+- Les fichiers de couverture sont limités en taille (67 Mo) et en extensions (`jpg`, `jpeg`, `png`, `webp`).
+- Les clés étrangères (`genreId`, `authorId`, `userId`) sont vérifiées comme existantes en base avant insertion.
+
+**CORS restreint**
+La configuration CORS (`backend/config/cors.ts`) n'autorise les requêtes cross-origin qu'en provenance de `http://localhost:5173` (l'origine du frontend en développement), limitant ainsi les appels depuis des origines non prévues.
+
+**Tokens OAT révocables**
+Contrairement aux JWT, les tokens OAT sont stockés en base de données. Ils peuvent être invalidés immédiatement lors d'un logout, sans attendre une expiration. Cela offre un contrôle précis sur les sessions actives.
+
+**Clés étrangères avec CASCADE**
+Les contraintes de clés étrangères avec `onDelete('CASCADE')` garantissent l'intégrité référentielle : la suppression d'un utilisateur ou d'un livre entraîne automatiquement la suppression des données associées, évitant tout enregistrement orphelin.
+
+**Middleware `force_json_response`**
+Toutes les réponses de l'API retournent du JSON, empêchant la fuite d'informations via des pages d'erreur HTML non maîtrisées.
+
+---
+
+## Tests
+
+Les tests de l'API ont été réalisés avec **Bruno**, un client HTTP open-source orienté développeur. La collection de tests est versionnée dans le dossier `backend/PassionLectureTestAPI/` et peut être importée directement dans Bruno.
+
+**Couverture des tests :**
+
+| Module | Requêtes testées |
+|:-------|:----------------|
+| Auth | Register, Login, Logout, Me |
+| Books | List, Get, Create, Update, Delete, My Books, Get Cover |
+| Authors | List |
+| Genres | List |
+| Reviews | List, Get, Create, Update, Delete |
+
+Chaque requête est organisée par dossier et utilise une variable d'environnement `baseUrl` (définie dans `environments/Local.bru`) pointant vers `http://localhost:3333`. Les requêtes nécessitant une authentification transmettent le token Bearer en header.
+
+Les tests couvrent les cas nominaux (réponses 200, 201, 204) ainsi que les cas d'erreur courants (ressource introuvable, accès non autorisé). Ils permettent de valider rapidement l'ensemble des endpoints après toute modification du backend.
+
+> **Limite actuelle :** Les tests Bruno sont manuels (pas d'assertions automatiques ni d'intégration CI/CD). La mise en place de tests automatisés avec `@japa/runner` (déjà configuré dans `backend/bin/test.ts`) constitue une évolution naturelle.
+
+---
 
 ## Conclusion
 
+### Organisation Git / GitHub
+
+Nous avons suivi une organisation basée sur les **branches par fonctionnalité**. Chaque développeur travaille sur sa propre branche nommée d'après son prénom (`latif`, `david`) ou la fonctionnalité concernée. Les Pull Requests sont ouvertes vers `main` une fois la tâche terminée.
+
+Le premier merge d'une PR se fait généralement sans conflit. Lorsque les deux développeurs terminent leurs tâches en parallèle, des conflits peuvent apparaître lors du second merge : ils sont résolus systématiquement en revue à deux, ce qui garantit que personne n'écrase du travail sans validation mutuelle.
+
+GitHub Projects a servi d'outil de suivi, avec des tickets liés aux commits et PR correspondants pour garder une traçabilité claire.
+
+---
+
 ### Conclusion générale
 
-Nous nous sommes plutôt bien débrouillés avec le framework Vue.js et l’API Composition. Malgré quelques erreurs complexes à résoudre, nous avons tout de même réussi à proposer une solution satisfaisante.
+Ce projet nous a permis de passer d'une simulation de backend (json-server) à une vraie API REST structurée avec AdonisJS. La mise en place de l'authentification par tokens, de la validation des données et des relations entre modèles nous a donné une vision complète du développement fullstack. Malgré les fonctionnalités manquantes (rôles, recherche, CRUD complet des avis côté frontend), l'architecture en place constitue une base solide et extensible.
+
+---
 
 ### Conclusion personnelle
 
 #### Conclusion de Latif
 
-J’ai bien aimé participer à ce projet et travailler avec le framework Vue.js. Cependant, cela m’a un peu dérangé de devoir simuler un backend avec json-server, car je pensais au départ faire uniquement du frontend durant ce projet. En effet, Vue.js semble au premier abord être un framework entièrement orienté frontend. Malgré cela, je pense m’en être globalement assez bien sorti.
+Ce projet m'a permis de consolider mes connaissances en développement backend avec AdonisJS et de comprendre concrètement le fonctionnement d'une API REST sécurisée. La mise en place de l'authentification par tokens OAT, du hachage des mots de passe et de la validation des données m'a appris énormément sur les bonnes pratiques de sécurité. J'aurais aimé avoir le temps d'implémenter la gestion des rôles et la recherche de livres, qui auraient apporté une véritable valeur ajoutée à l'application. Dans l'ensemble, je suis satisfait du travail accompli et de la progression réalisée.
 
 #### Conclusion de David
 
-J'ai apprécié le fait que le développement du projet soit principalement lié à VueJS et non à l’HTML et au CSS, grâce à l’IA. Une critique que je pourrais formuler concerne le fait que le projet AdonisJS ait été réalisé en même temps que celui-ci. Les deux frameworks se ressemblant, il était parfois confus de passer de l’un à l’autre. Les autres parties du projet, comme par exemple les maquettes ou le rapport, ne sont pas forcément toujours un plaisir à réaliser. J’ai tout de même eu beaucoup de plaisir à effectuer ce projet et les exercices réalisés en classe étaient très utiles.
+J'ai apprécié la cohérence entre le projet frontend réalisé précédemment et ce backend, qui donne enfin du sens à toute l'architecture. Travailler avec AdonisJS et TypeScript en parallèle du frontend Vue.js était parfois source de confusion entre les deux environnements, mais cela m'a aussi forcé à mieux distinguer les responsabilités de chaque couche. Les parties moins stimulantes, comme la rédaction du rapport ou la configuration initiale, restent nécessaires et j'ai appris à les appréhender différemment. Ce projet m'a donné une bonne vision du développement fullstack en conditions réelles.
+
+---
 
 ### Critique de la planification
 
-Nos tâches n'étaient pas assez précises. Nous aurions pu détailler davantage leur description dans GitHub Projects et les diviser en éléments plus petits afin de mieux structurer le travail.
+Notre planification a souffert d'un manque de granularité. Les tâches définies en début de projet étaient trop larges (ex. : "Implémenter l'authentification") sans être découpées en sous-tâches précises et estimées. Cela a rendu difficile le suivi de l'avancement réel et a contribué à laisser certaines fonctionnalités non terminées (gestion des rôles, recherche, CRUD complet des avis).
+
+Pour un prochain projet, nous découperions chaque fonctionnalité en tâches atomiques d'une à deux périodes maximum, avec des critères d'acceptation clairs. Cela permettrait au chef de projet d'avoir une vision précise de l'avancement et d'anticiper les retards avant qu'ils ne deviennent bloquants.

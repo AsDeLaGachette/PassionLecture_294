@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "PassionLectureTestAPI",
+  "name": "PassionLectureTestApi",
   "type": "collection",
   "ignore": [
     "node_modules",
