@@ -20,7 +20,6 @@
    - [Planification des tâches](#planification-des-tâches)
    - [Analyse de l'API REST](#analyse-de-lapi-rest)
    - [Analyse de la base de données](#analyse-de-la-base-de-données)
-   - [Architecture](#architecture)
 3. [Réalisation](#réalisation)
    - [Authentification et gestion des rôles](#authentification-et-gestion-des-rôles)
    - [Sécurité](#sécurité)
@@ -41,7 +40,7 @@ Le projet est découpé en deux parties distinctes. Le **frontend** est dévelop
 
 Ce projet fait suite à une première version entièrement frontend utilisant `json-server` pour simuler un backend. L'objectif de cette itération est de remplacer cette simulation par un vrai backend structuré, avec authentification, validation des données et base de données relationnelle.
 
-> **Fonctionnalités manquantes :** La gestion des rôles (distinction admin / utilisateur), la complétion du CRUD des avis côté frontend ainsi que la recherche de livres n'ont pas été implémentées dans cette version et constituent les principales pistes d'amélioration futures.
+> **Fonctionnalités manquantes :** La gestion des rôles (distinction admin / utilisateur).
 
 ---
 
@@ -107,93 +106,97 @@ L'API est préfixée par `/api`. La documentation interactive est accessible via
 
 ### Analyse de la base de données
 
+La base de données est composée de six tables. Voici le détail de chacune :
+
+#### Table `users`
+
+| Colonne | Type | Contraintes |
+|:--------|:-----|:------------|
+| `id` | INT | PK, auto-increment, NOT NULL |
+| `full_name` | VARCHAR | nullable |
+| `email` | VARCHAR(254) | NOT NULL, UNIQUE |
+| `password` | VARCHAR | NOT NULL |
+| `created_at` | TIMESTAMP | NOT NULL |
+| `updated_at` | TIMESTAMP | nullable |
+
+#### Table `auth_access_tokens`
+
+Gérée automatiquement par `@adonisjs/auth`. Stocke les tokens OAT actifs liés à chaque utilisateur, permettant leur révocation immédiate lors d'un logout.
+
+#### Table `genres`
+
+| Colonne | Type | Contraintes |
+|:--------|:-----|:------------|
+| `id` | INT | PK, auto-increment |
+| `title` | VARCHAR | — |
+| `created_at` | TIMESTAMP | — |
+| `updated_at` | TIMESTAMP | — |
+
+#### Table `authors`
+
+| Colonne | Type | Contraintes |
+|:--------|:-----|:------------|
+| `id` | INT | PK, auto-increment |
+| `firstname` | VARCHAR | — |
+| `lastname` | VARCHAR | — |
+| `created_at` | TIMESTAMP | — |
+| `updated_at` | TIMESTAMP | — |
+
+#### Table `books`
+
+| Colonne | Type | Contraintes |
+|:--------|:-----|:------------|
+| `id` | INT | PK, auto-increment |
+| `title` | VARCHAR | — |
+| `year` | INT | — |
+| `publisher` | VARCHAR | — |
+| `excerpt` | VARCHAR | — |
+| `nbr_page` | INT | — |
+| `description` | VARCHAR | — |
+| `cover` | LONGBLOB | image de couverture |
+| `genre_id` | INT | FK → `genres.id` ON DELETE CASCADE |
+| `author_id` | INT | FK → `authors.id` ON DELETE CASCADE |
+| `user_id` | INT | FK → `users.id` ON DELETE CASCADE |
+| `created_at` | TIMESTAMP | — |
+| `updated_at` | TIMESTAMP | — |
+
+#### Table `reviews`
+
+| Colonne | Type | Contraintes |
+|:--------|:-----|:------------|
+| `id` | INT | PK, auto-increment |
+| `title` | VARCHAR | — |
+| `rating` | INT | — |
+| `comment` | VARCHAR | — |
+| `user_id` | INT | FK → `users.id` ON DELETE CASCADE |
+| `book_id` | INT | FK → `books.id` ON DELETE CASCADE |
+| `created_at` | TIMESTAMP | — |
+| `updated_at` | TIMESTAMP | — |
+
+#### Relations
+
+- Un **genre** peut être associé à plusieurs **livres** (1-N).
+- Un **auteur** peut avoir écrit plusieurs **livres** (1-N).
+- Un **utilisateur** peut avoir ajouté plusieurs **livres** (0-N).
+- Un **livre** peut recevoir plusieurs **avis** (1-N).
+- Un **utilisateur** peut rédiger plusieurs **avis** (1-N).
+
+Toutes les clés étrangères sont définies avec `ON DELETE CASCADE`, ce qui garantit l'intégrité référentielle : la suppression d'un enregistrement parent entraîne automatiquement la suppression de tous les enregistrements enfants associés.
+
 #### MCD (Modèle Conceptuel de Données)
 
-Le MCD est disponible dans le fichier `doc/MCD.loo` (outil Looping). Voici les entités et associations principales :
+<div align="center">
+    <img src="./img/mcd.png" height="400">
+    <br>
+</div>
 
-```
-UTILISATEUR ──< écrit >── BOOKS ──< possède >── GENRE
-                 │
-                 └──< reçoit >── REVIEWS
-                 
-AUTHORS ──< écrit par >── BOOKS
-
-UTILISATEUR ──< rédige >── REVIEWS
-```
-
-Les relations définies dans les modèles AdonisJS (Lucid) :
-
-| Modèle | Relation | Cible | Clé étrangère |
-|:-------|:---------|:------|:--------------|
-| `Book` | `belongsTo` | `Genre` | `genre_id` |
-| `Book` | `belongsTo` | `Author` | `author_id` |
-| `Book` | `belongsTo` | `User` | `user_id` |
-| `Book` | `hasMany` | `Review` | — |
-| `Review` | `belongsTo` | `User` | `user_id` |
-| `Review` | `belongsTo` | `Book` | `book_id` |
-| `User` | `hasMany` | `Book` | — |
-| `User` | `hasMany` | `Review` | — |
 
 #### MLD (Modèle Logique de Données)
 
-```
-users(id, full_name, email, password, created_at, updated_at)
-auth_access_tokens(id, tokenable_id → users.id, ...)
-genres(id, title)
-authors(id, firstname, lastname)
-books(id, title, year, publisher, excerpt, nbr_page, description, cover,
-      genre_id → genres.id, author_id → authors.id, user_id → users.id,
-      created_at, updated_at)
-reviews(id, title, rating, comment,
-        user_id → users.id, book_id → books.id,
-        created_at, updated_at)
-```
-
-#### MPD (Modèle Physique de Données)
-
-Les migrations AdonisJS (dossier `backend/database/migrations/`) reflètent exactement ce MPD. Les contraintes de clés étrangères sont définies avec `onDelete('CASCADE')` : la suppression d'un utilisateur supprime ses livres et ses avis ; la suppression d'un livre supprime ses avis.
-
----
-
-### Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Navigateur                               │
-│                                                                   │
-│   ┌─────────────────────────────────────┐                        │
-│   │         Frontend – Vue.js 3          │                        │
-│   │  (Composition API, Vue Router,       │                        │
-│   │   Axios, Pinia)                      │                        │
-│   └──────────────┬──────────────────────┘                        │
-└──────────────────┼──────────────────────────────────────────────-┘
-                   │  Requêtes HTTP (JSON / multipart)
-                   │  Bearer Token (OAT) dans les headers
-                   ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  Backend – AdonisJS 6 (TypeScript)               │
-│                                                                   │
-│  ┌────────────┐   ┌──────────────┐   ┌────────────────────────┐  │
-│  │  Routeur   │──▶│ Middlewares  │──▶│     Contrôleurs        │  │
-│  │ /api/...   │   │ (Auth, CORS, │   │ (Books, Reviews,       │  │
-│  └────────────┘   │  ForceJSON)  │   │  Auth, Authors, Genre) │  │
-│                   └──────────────┘   └────────────┬───────────┘  │
-│                                                   │               │
-│                                      ┌────────────▼───────────┐  │
-│                                      │   Modèles – Lucid ORM  │  │
-│                                      │ (Book, Review, User,   │  │
-│                                      │  Author, Genre)        │  │
-│                                      └────────────┬───────────┘  │
-└───────────────────────────────────────────────────┼─────────────-┘
-                                                    │  SQL (Knex)
-                                                    ▼
-                                    ┌───────────────────────────┐
-                                    │     Base de données MySQL  │
-                                    │  (users, books, reviews,   │
-                                    │   authors, genres,         │
-                                    │   auth_access_tokens)      │
-                                    └───────────────────────────┘
-```
+<div align="center">
+    <img src="./img/mld.png" height="400">
+    <br>
+</div>
 
 ---
 
@@ -225,7 +228,7 @@ Les routes protégées (création/modification/suppression de livres et d'avis, 
 
 #### Gestion des rôles
 
-> **Fonctionnalité non implémentée.** Dans la version actuelle, il n'existe pas de distinction entre un utilisateur standard et un administrateur. Tous les utilisateurs authentifiés ont les mêmes droits d'écriture. La mise en place d'un système de rôles (ex. : seul le propriétaire d'un livre peut le modifier/supprimer, les admins peuvent tout gérer) constitue une amélioration prioritaire pour la prochaine version.
+> **Fonctionnalité non implémentée.** Dans la version actuelle, il n'existe pas de distinction entre un utilisateur standard et un administrateur. Tous les utilisateurs authentifiés ont les mêmes droits d'écriture. De plus, la vérification de propriété sur les avis (empêcher un utilisateur de modifier ou supprimer un avis qui ne lui appartient pas) n'a pas pu être implémentée.
 
 ---
 
@@ -250,33 +253,12 @@ La configuration CORS (`backend/config/cors.ts`) n'autorise les requêtes cross-
 **Tokens OAT révocables**
 Contrairement aux JWT, les tokens OAT sont stockés en base de données. Ils peuvent être invalidés immédiatement lors d'un logout, sans attendre une expiration. Cela offre un contrôle précis sur les sessions actives.
 
+
 **Clés étrangères avec CASCADE**
 Les contraintes de clés étrangères avec `onDelete('CASCADE')` garantissent l'intégrité référentielle : la suppression d'un utilisateur ou d'un livre entraîne automatiquement la suppression des données associées, évitant tout enregistrement orphelin.
 
 **Middleware `force_json_response`**
 Toutes les réponses de l'API retournent du JSON, empêchant la fuite d'informations via des pages d'erreur HTML non maîtrisées.
-
----
-
-## Tests
-
-Les tests de l'API ont été réalisés avec **Bruno**, un client HTTP open-source orienté développeur. La collection de tests est versionnée dans le dossier `backend/PassionLectureTestAPI/` et peut être importée directement dans Bruno.
-
-**Couverture des tests :**
-
-| Module | Requêtes testées |
-|:-------|:----------------|
-| Auth | Register, Login, Logout, Me |
-| Books | List, Get, Create, Update, Delete, My Books, Get Cover |
-| Authors | List |
-| Genres | List |
-| Reviews | List, Get, Create, Update, Delete |
-
-Chaque requête est organisée par dossier et utilise une variable d'environnement `baseUrl` (définie dans `environments/Local.bru`) pointant vers `http://localhost:3333`. Les requêtes nécessitant une authentification transmettent le token Bearer en header.
-
-Les tests couvrent les cas nominaux (réponses 200, 201, 204) ainsi que les cas d'erreur courants (ressource introuvable, accès non autorisé). Ils permettent de valider rapidement l'ensemble des endpoints après toute modification du backend.
-
-> **Limite actuelle :** Les tests Bruno sont manuels (pas d'assertions automatiques ni d'intégration CI/CD). La mise en place de tests automatisés avec `@japa/runner` (déjà configuré dans `backend/bin/test.ts`) constitue une évolution naturelle.
 
 ---
 
@@ -294,7 +276,7 @@ GitHub Projects a servi d'outil de suivi, avec des tickets liés aux commits et 
 
 ### Conclusion générale
 
-Ce projet nous a permis de passer d'une simulation de backend (json-server) à une vraie API REST structurée avec AdonisJS. La mise en place de l'authentification par tokens, de la validation des données et des relations entre modèles nous a donné une vision complète du développement fullstack. Malgré les fonctionnalités manquantes (rôles, recherche, CRUD complet des avis côté frontend), l'architecture en place constitue une base solide et extensible.
+Ce projet nous a permis de passer d'une simulation de backend (json-server) à une vraie API REST structurée avec AdonisJS. La mise en place de l'authentification par tokens, de la validation des données et des relations entre modèles nous a donné une vision complète du développement fullstack. Malgré les fonctionnalités manquantes (rôle), l'architecture en place constitue une base solide et extensible.
 
 ---
 
@@ -302,7 +284,7 @@ Ce projet nous a permis de passer d'une simulation de backend (json-server) à u
 
 #### Conclusion de Latif
 
-Ce projet m'a permis de consolider mes connaissances en développement backend avec AdonisJS et de comprendre concrètement le fonctionnement d'une API REST sécurisée. La mise en place de l'authentification par tokens OAT, du hachage des mots de passe et de la validation des données m'a appris énormément sur les bonnes pratiques de sécurité. J'aurais aimé avoir le temps d'implémenter la gestion des rôles et la recherche de livres, qui auraient apporté une véritable valeur ajoutée à l'application. Dans l'ensemble, je suis satisfait du travail accompli et de la progression réalisée.
+Ce projet m'a permis de consolider mes connaissances en développement backend avec AdonisJS et de comprendre concrètement le fonctionnement d'une API REST sécurisée. La mise en place de l'authentification par tokens OAT, du hachage des mots de passe et de la validation des données m'a appris énormément sur les bonnes pratiques de sécurité. J'aurais aimé avoir le temps d'implémenter la gestion des rôles, qui auraient apporté une véritable valeur ajoutée à l'application. Dans l'ensemble, je suis satisfait du travail accompli et de la progression réalisée.
 
 #### Conclusion de David
 
@@ -312,6 +294,4 @@ J'ai apprécié la cohérence entre le projet frontend réalisé précédemment 
 
 ### Critique de la planification
 
-Notre planification a souffert d'un manque de granularité. Les tâches définies en début de projet étaient trop larges (ex. : "Implémenter l'authentification") sans être découpées en sous-tâches précises et estimées. Cela a rendu difficile le suivi de l'avancement réel et a contribué à laisser certaines fonctionnalités non terminées (gestion des rôles, recherche, CRUD complet des avis).
-
-Pour un prochain projet, nous découperions chaque fonctionnalité en tâches atomiques d'une à deux périodes maximum, avec des critères d'acceptation clairs. Cela permettrait au chef de projet d'avoir une vision précise de l'avancement et d'anticiper les retards avant qu'ils ne deviennent bloquants.
+Conscients des erreurs de planification soulevées lors du projet précédent, nous avons tenté d'y remédier en découpant davantage nos tâches au démarrage. Cependant, au fil du temps, nous avons progressivement rebasculé vers des tâches trop vastes, répétant ainsi les mêmes travers qu'auparavant. Ce glissement s'est fait de manière naturelle, sans que l'on s'en rende compte sur le moment, ce qui montre que la discipline de découpage doit être maintenue activement tout au long du projet, et pas seulement à son lancement.
