@@ -6,27 +6,24 @@ import ReviewService from '@/services/ReviewService'
 const title = ref('')
 const rating = ref(0)
 const comment = ref('')
-const date = ref('')
 const router = useRouter()
 const bookId = useRoute().params.id
 
 const submitReview = async () => {
   try {
     const newReview = {
-      book_id: Number(bookId),
+      bookId: Number(bookId),
+      userId: 1,
       title: title.value,
       rating: rating.value,
       comment: comment.value,
-      user_id: 1,
-      date: new Date().toISOString().split('T')[0],
     }
 
-    await ReviewService.addReview(newReview)
+    await ReviewService.addReview(newReview, bookId)
 
     title.value = ''
-    rating.value = ''
+    rating.value = 0
     comment.value = ''
-    date.value = ''
 
     router.push({ name: 'BookDetails', params: { id: bookId } })
   } catch (error) {

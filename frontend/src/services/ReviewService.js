@@ -7,8 +7,8 @@ export default {
   getReview(reviewId) {
     return apiClient.get(`/reviews/${reviewId}`)
   },
-  addReview(review) { 
-    return apiClient.post(`/reviews`, review)
+  addReview(review, bookId) { 
+    return apiClient.post(`/books/${bookId}/reviews`, review)
   },
   updateReview(reviewId, updatedReview) {
     return apiClient.put(`reviews/${reviewId}`, updatedReview)
