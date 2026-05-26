@@ -4,16 +4,16 @@ export default {
   getReviews(bookId) {
     return apiClient.get(`/books/${bookId}/reviews`)
   },
-  getReview(reviewId) {
-    return apiClient.get(`/reviews/${reviewId}`)
+  getReview(bookId, reviewId) {
+    return apiClient.get(`/books/${bookId}/reviews/${reviewId}`)
   },
-  addReview(review, bookId) { 
+  addReview(bookId, review) { 
     return apiClient.post(`/books/${bookId}/reviews`, review)
   },
-  updateReview(reviewId, updatedReview) {
-    return apiClient.put(`reviews/${reviewId}`, updatedReview)
+  updateReview(bookId, reviewId, updatedReview) {
+    return apiClient.put(`/books/${bookId}/reviews/${reviewId}`, updatedReview)
   },
-  deleteReview(reviewId) {
-    return apiClient.delete(`/reviews/${reviewId}`)
+  deleteReview(bookId, reviewId) {
+    return apiClient.delete(`/books/${bookId}/reviews/${reviewId}`)
   },
 }

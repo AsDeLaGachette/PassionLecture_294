@@ -46,7 +46,7 @@ const router = createRouter({
       component: MyBooks,
     },
     {
-      path: '/books/:id',
+      path: '/books/:bookId',
       name: 'BookLayout',
       props: true,
       component: BookLayout,
@@ -61,6 +61,7 @@ const router = createRouter({
           path: 'details',
           name: 'BookDetails',
           component: BookDetails,
+          props: true,
         },
         {
           path: 'reviews',
@@ -69,14 +70,16 @@ const router = createRouter({
           component: ReviewLayout,
           children: [
             {
-              path: 'edit',
+              path: 'edit/:reviewId',
               name: 'ReviewEdit',
               component: ReviewEdit,
+              props: true,
             },
             {
               path: 'add',
               name: 'ReviewAdd',
               component: ReviewAdd,
+              props: true
             },
           ],
         },

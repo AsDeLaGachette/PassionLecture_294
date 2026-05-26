@@ -32,7 +32,7 @@ onMounted( async () => {
         <li class="book-item" v-for="(book, index) in books" :key="index">
           <RouterLink
             v-if="index < 5 && book.id"
-            :to="{ name: 'BookDetails', params: { id: book.id } }"
+            :to="{ name: 'BookDetails', params: { bookId: book.id } }"
             class="book-card"
           >
             <div class="book-thumbnail"><img :src="`/api/books/${book.id}/cover`" alt="skibidi" /></div>
