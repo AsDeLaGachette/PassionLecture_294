@@ -79,7 +79,7 @@ const confirmDelete = async () => {
   <main class="container detail-container">
     <div v-if="book" class="detail-layout">
       <div class="detail-left">
-        <img class="book-cover-large" :src="`/api/books/${book.id}/cover`" alt="" />
+        <img class="book-cover-large" :src="`/api/books/${book.id}/cover?t=${Date.now()}`" alt="" />
         <div class="small-thumbnails">
           <RouterLink
             v-for="item in nextImages"
@@ -87,7 +87,7 @@ const confirmDelete = async () => {
             :to="{ name: 'BookDetails', params: { id: item.id } }"
             class="small-thumb-link"
           >
-            <img class="small-thumb" :src="`/api/books/${item.id}/cover`" alt="" />
+            <img class="small-thumb" :src="`/api/books/${item.id}/cover?t=${Date.now()}`" alt="" />
           </RouterLink>
         </div>
       </div>

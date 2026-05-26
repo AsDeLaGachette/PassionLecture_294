@@ -7,7 +7,7 @@ const BookValidator = vine.compile(
     nbrPage: vine.number().min(1),
     description: vine.string().minLength(2).maxLength(255),
     title: vine.string().minLength(2).maxLength(255),
-    cover: vine.file({ size: '67mb', extnames: ['jpg', 'jpeg', 'png', 'jfif', 'webp'] }),
+    cover: vine.file({ size: '67mb', extnames: ['jpg', 'jpeg', 'png', 'jfif', 'webp'] }).optional(),
     genreId: vine.number().exists(async (db, value) => {
       const genre = await db.from('genres').where('id', value).first()
       return !!genre

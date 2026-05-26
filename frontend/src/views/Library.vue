@@ -54,7 +54,6 @@ onMounted( async () => {
         style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 1px solid #ddd; border-radius: 0.5rem;"
       />
     </div>
-
     <div class="add-section" style="margin-top: 2rem;">
       <ul class="books-grid">
         <div class="library-item">
@@ -67,7 +66,6 @@ onMounted( async () => {
         </div>
       </ul>
     </div>
-    
     <section v-for="(categoryBooks, genre) in booksByCategory" :key="genre" class="category-section">
       
       <h2 class="category-title">{{ genre }}</h2>
@@ -76,7 +74,7 @@ onMounted( async () => {
         <li class="book-item" v-for="book in categoryBooks" :key="book.id">
           <RouterLink :to="{ name: 'BookDetails', params: { id: book.id } }" class="book-card">
             <div class="book-thumbnail">
-              <img :src="`/api/books/${book.id}/cover`" alt=""/>
+              <img :src="`/api/books/${book.id}/cover?t=${Date.now()}`" alt=""/>
             </div>
             <div class="book-info">
               <h3 class="book-title">{{ book.title }}</h3>

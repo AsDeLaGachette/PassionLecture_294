@@ -20,6 +20,11 @@ export default defineConfig({
     '/api': {
       target: 'http://localhost:3333',
       changeOrigin: true,
+      configure: (proxy) => {
+      proxy.on('proxyRes', (proxyRes) => {
+        proxyRes.headers['cache-control'] = 'no-store'
+      })
+    }
     }
   }
 }
