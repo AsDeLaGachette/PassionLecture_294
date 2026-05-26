@@ -7,7 +7,7 @@ export default class BooksController {
    * Display a list of resource
    */
   async index({}: HttpContext) {
-    const response = await Book.query().orderBy('title', 'asc')
+    const response = await Book.query().preload('author').preload('genre').orderBy('title', 'asc')
     return response
   }
 
